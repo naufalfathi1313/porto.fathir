@@ -11,7 +11,11 @@
       if (e.isIntersecting) {
         e.target.classList.add('in');
         if (e.target.dataset.count) count(e.target);
-        io.unobserve(e.target);
+        if (e.target.dataset.replay === undefined) io.unobserve(e.target);
+      } else if (e.target.dataset.replay !== undefined) {
+        // angka besar ngitung lagi tiap balik ke layar
+        e.target._done = false;
+        e.target.textContent = '0';
       }
     });
   }, {
@@ -26,6 +30,7 @@
   function count(el) {
     if (el._done) return;
     el._done = true;
+    var run = el._run = (el._run || 0) + 1;
     var to = parseFloat(el.dataset.count),
       dec = +(el.dataset.dec || 0),
       suf = el.dataset.suffix || '';
@@ -41,7 +46,7 @@
       var p = Math.min((t - t0) / dur, 1),
         e = 1 - Math.pow(1 - p, 4);
       el.textContent = (to * e).toFixed(dec) + suf;
-      if (p < 1) requestAnimationFrame(step);
+      if (p < 1 && el._run === run) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
   }
