@@ -106,13 +106,13 @@
     if (li && li !== prio.firstChild) rankPrio(li);
   });
 
-  // slot video 10 detik: baru muncul kalau file-nya ada, play pas kelihatan
+  // slot video 10 detik: baru muncul kalau file-nya ada, main sekali pas kelihatan
   var vio = new IntersectionObserver(function(es) {
     es.forEach(function(e) {
       var v = e.target;
       if (e.isIntersecting) {
         if (!v.src) v.src = v.dataset.src;
-        v.play().catch(function() {});
+        if (!v.ended) v.play().catch(function() {});
       } else v.pause();
     });
   }, {
@@ -121,6 +121,21 @@
   document.querySelectorAll('.vslot video').forEach(function(v) {
     v.addEventListener('loadeddata', function() {
       v.parentNode.classList.add('ready');
+    });
+    // browser blok autoplay bersuara, jadi mulai muted dan suara dinyalain lewat tombol
+    var snd = v.parentNode.querySelector('.snd');
+    snd.addEventListener('click', function() {
+      v.muted = !v.muted;
+      snd.setAttribute('aria-pressed', String(!v.muted));
+      snd.setAttribute('aria-label', v.muted ? 'Nyalain suara' : 'Matiin suara');
+      if (!v.muted) v.play().catch(function() {});
+    });
+    // sekali main, tanpa loop; tap videonya buat muter ulang
+    v.addEventListener('click', function() {
+      if (v.ended) {
+        v.currentTime = 0;
+        v.play().catch(function() {});
+      }
     });
     vio.observe(v);
   });

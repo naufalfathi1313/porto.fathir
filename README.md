@@ -19,7 +19,7 @@ Buka `index.html` di browser buat lihat hasilnya. Semua file harus tetap di fold
 - **Ganti warna kuning:** di `css/style.css`, ubah `--accent` di bagian `:root`.
 - **Ganti foto:** timpa `assets/img/foto-fathir.jpg` pakai foto baru dengan nama yang sama.
 - **Tambah entri timeline:** di `index.html`, copy satu baris `<div class="ti">…</div>` di section Proses. Kalau mau di-highlight, pakai `class="ti hl"` dan tambahin `<span class="badge">Featured</span>`.
-- **Video 10 detik:** taruh `konten.mp4` dan `publikasi.mp4` (portrait 9:16, tanpa suara) di `assets/video/`. Otomatis muncul dan muter pas kelihatan; sebelum ada file-nya, yang tampil kotak placeholder.
+- **Video 10 detik:** taruh `konten.mp4` dan `publikasi.mp4` (portrait 9:16) di `assets/video/`. Otomatis muncul dan main sekali pas kelihatan (tap buat muter ulang) (awalnya muted, pengunjung bisa nyalain suara lewat tombol speaker); sebelum ada file-nya, yang tampil kotak placeholder.
 - **Angka yang ngitung naik:** atur lewat atribut `data-count` (misalnya `data-count="350"`).
 
 ## Upload ke internet
