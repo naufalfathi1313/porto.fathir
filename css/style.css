@@ -1661,3 +1661,48 @@ h3 {
     transform: none !important
   }
 }
+
+/* ---- Thinking proses: 3 langkah di intro BNET ---- */
+.think3 {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 860px;
+  margin: 40px auto 0;
+  text-align: left;
+}
+
+.think3 li {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--dark2);
+  border-radius: 22px;
+  padding: 20px 22px;
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.think3 b {
+  font-size: 13px;
+  letter-spacing: .08em;
+  color: var(--accent);
+}
+
+.bignum .eyebrow {
+  margin-bottom: 18px;
+}
+
+@media(max-width:760px) {
+  .think3 {
+    grid-template-columns: 1fr;
+  }
+
+  .think3 li {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 14px;
+  }
+}
