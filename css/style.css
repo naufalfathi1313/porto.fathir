@@ -642,7 +642,8 @@ h3 {
 }
 
 .pillars .wrap {
-  width: 100%
+  width: 100%;
+  max-width: 1360px
 }
 
 .pillars .head {
@@ -1686,11 +1687,36 @@ h3 {
 }
 
 /* ---- Slot video 10 detik di pilar ---- */
-.pbody {
+.pcard {
   display: grid;
-  grid-template-columns: 1fr 112px;
-  gap: 20px;
-  align-items: start;
+  grid-template-columns: 1fr auto;
+  column-gap: 28px;
+  align-content: start;
+}
+
+.pcard > :not(.pbody),
+.pbody > div {
+  grid-column: 1;
+}
+
+.pbody {
+  display: contents;
+}
+
+.pbody .vslot {
+  grid-column: 2;
+  grid-row: 1 / span 5;
+  align-self: center;
+  width: min(250px, 28vh);
+}
+
+.pbody dl {
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+.pbody dd {
+  margin-bottom: 10px;
 }
 
 .vslot {
@@ -1739,13 +1765,25 @@ h3 {
 }
 
 @media(max-width:860px) {
-  .pbody {
-    grid-template-columns: 1fr;
+  .pcard {
+    display: block;
   }
 
-  .vslot {
-    aspect-ratio: 16 / 9;
-    max-height: 200px;
+  .pbody {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .pbody > div,
+  .pbody .vslot {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .pbody .vslot {
+    width: min(100%, 260px);
+    margin: 0 auto;
   }
 }
 
@@ -1762,13 +1800,13 @@ h3 {
 
 /* ---- Closing statement ---- */
 .closing {
-  padding: clamp(90px, 12vw, 160px) 0;
+  padding: clamp(48px, 6vw, 80px) 0;
   text-align: center;
 }
 
 .closing .cookie {
   width: clamp(84px, 9vw, 112px);
-  margin: 0 auto 28px;
+  margin: 0 auto 14px;
   display: block;
 }
 
@@ -1787,7 +1825,7 @@ h3 {
 .closing h2 {
   font-size: clamp(34px, 5.6vw, 72px);
   max-width: 18ch;
-  margin: 14px auto 22px;
+  margin: 8px auto 16px;
 }
 
 .closing .lead {
@@ -1878,4 +1916,44 @@ h3 {
 .snd:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* layar pendek: pilar dipadatkan biar kartu tetap muat dalam satu layar */
+@media(min-width:861px) and (max-height:820px) {
+  .pcard {
+    padding: 22px 28px;
+  }
+
+  .pcard h3 {
+    font-size: 34px;
+    margin: 4px 0 2px;
+  }
+
+  .pcard .sub {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .pbody dl {
+    grid-template-columns: auto 1fr;
+    gap: 6px 14px;
+    font-size: 14px;
+  }
+
+  .pbody dd {
+    margin-bottom: 0;
+  }
+
+  .pcard .tags {
+    margin-top: 12px;
+  }
+
+  .pcard .ex {
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  .pbody .vslot {
+    width: min(250px, 30vh);
+  }
 }
