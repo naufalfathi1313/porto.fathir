@@ -1,4 +1,4 @@
-/* Portofolio Fathir — animasi scroll, counter, nav, lightbox kalender */
+/* Portofolio Fathir — animasi scroll, counter, nav, lightbox kalender, priority, video */
 (function() {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   requestAnimationFrame(function() {
@@ -72,6 +72,72 @@
   });
   lbx.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLb();
+  });
+
+  // priority interaktif: tap item -> naik ke atas, bar nyesuain urutan
+  var prio = document.getElementById('prio'),
+    widths = [1, .78, .55, .32];
+
+  function rankPrio(first) {
+    var items = [].slice.call(prio.children),
+      tops = items.map(function(li) {
+        return li.getBoundingClientRect().top;
+      });
+    if (first) prio.insertBefore(first, prio.firstChild);
+    [].slice.call(prio.children).forEach(function(li, i) {
+      var bar = li.querySelector('i');
+      bar.style.setProperty('--w', widths[i]);
+      bar.style.setProperty('--o', 1 - i * .22);
+      if (first && !reduce) {
+        li.animate([{
+          transform: 'translateY(' + (tops[items.indexOf(li)] - li.getBoundingClientRect().top) + 'px)'
+        }, {
+          transform: 'none'
+        }], {
+          duration: 520,
+          easing: 'cubic-bezier(.34,1.56,.64,1)'
+        });
+      }
+    });
+  }
+  rankPrio();
+  prio.addEventListener('click', function(e) {
+    var li = e.target.closest('li');
+    if (li && li !== prio.firstChild) rankPrio(li);
+  });
+
+  // slot video 10 detik: baru muncul kalau file-nya ada, main sekali pas kelihatan
+  var vio = new IntersectionObserver(function(es) {
+    es.forEach(function(e) {
+      var v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) v.src = v.dataset.src;
+        if (!v.ended) v.play().catch(function() {});
+      } else v.pause();
+    });
+  }, {
+    threshold: .4
+  });
+  document.querySelectorAll('.vslot video').forEach(function(v) {
+    v.addEventListener('loadeddata', function() {
+      v.parentNode.classList.add('ready');
+    });
+    // browser blok autoplay bersuara, jadi mulai muted dan suara dinyalain lewat tombol
+    var snd = v.parentNode.querySelector('.snd');
+    snd.addEventListener('click', function() {
+      v.muted = !v.muted;
+      snd.setAttribute('aria-pressed', String(!v.muted));
+      snd.setAttribute('aria-label', v.muted ? 'Nyalain suara' : 'Matiin suara');
+      if (!v.muted) v.play().catch(function() {});
+    });
+    // sekali main, tanpa loop; tap videonya buat muter ulang
+    v.addEventListener('click', function() {
+      if (v.ended) {
+        v.currentTime = 0;
+        v.play().catch(function() {});
+      }
+    });
+    vio.observe(v);
   });
 
   // scroll-driven
