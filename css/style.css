@@ -870,63 +870,6 @@ h3 {
   background: #2fb344
 }
 
-.cal {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  margin: 16px 0 22px
-}
-
-.cal i {
-  display: block;
-  height: 34px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, .06);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform .7s var(--spring);
-  transition-delay: calc(var(--i) * 60ms)
-}
-
-.in .cal i {
-  transform: none
-}
-
-.cal i.a {
-  background: #3a6df0
-}
-
-.cal i.b {
-  background: #e8b931
-}
-
-.cal i.c {
-  background: #b45cf0
-}
-
-.cal i.d {
-  background: #2fb344
-}
-
-.prio {
-  display: grid;
-  gap: 6px;
-  margin: 16px 0 22px
-}
-
-.prio div {
-  height: 10px;
-  border-radius: 5px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  transition: transform 1s var(--ease)
-}
-
-.in .prio div {
-  transform: scaleX(var(--w))
-}
-
 .note {
   margin-top: 18px;
   color: var(--dark-ink2);
@@ -1555,11 +1498,6 @@ h3 {
   margin: 18px auto 40px
 }
 
-.contact h2 em {
-  font-style: normal;
-  color: var(--accent)
-}
-
 .cgrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1639,8 +1577,6 @@ h3 {
     filter: none !important
   }
 
-  .cal i,
-  .prio div,
   .calshot,
   .lb img {
     transform: none !important;
@@ -1704,5 +1640,203 @@ h3 {
     flex-direction: row;
     align-items: baseline;
     gap: 14px;
+  }
+}
+
+
+/* ---- Priority interaktif ---- */
+.prio {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 22px;
+  position: relative;
+}
+
+.prio button {
+  width: 100%;
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--dark-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.prio i {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--accent);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--w, 1));
+  opacity: var(--o, 1);
+  transition: transform .7s var(--spring), opacity .5s var(--ease);
+}
+
+.prio button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+/* ---- Slot video 10 detik di pilar ---- */
+.pbody {
+  display: grid;
+  grid-template-columns: 1fr 112px;
+  gap: 20px;
+  align-items: start;
+}
+
+.vslot {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, .06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+  display: grid;
+  place-items: center;
+}
+
+.vslot video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+}
+
+.vslot.ready video {
+  opacity: 1;
+}
+
+.vslot figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.25;
+  color: var(--dark-ink2);
+}
+
+.vslot figcaption b {
+  color: var(--accent);
+  font-size: 13px;
+}
+
+.vslot.ready figcaption {
+  display: none;
+}
+
+@media(max-width:860px) {
+  .pbody {
+    grid-template-columns: 1fr;
+  }
+
+  .vslot {
+    aspect-ratio: 16 / 9;
+    max-height: 200px;
+  }
+}
+
+/* ---- Organisasi 3 kolom ---- */
+.edu.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media(max-width:960px) {
+  .edu.three {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Closing statement ---- */
+.closing {
+  padding: clamp(90px, 12vw, 160px) 0;
+  text-align: center;
+}
+
+.closing .cookie {
+  width: clamp(84px, 9vw, 112px);
+  margin: 0 auto 28px;
+  display: block;
+}
+
+.closing .chip1 {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: chipPulse 2.4s var(--ease) infinite;
+}
+
+@keyframes chipPulse {
+  50% {
+    transform: scale(1.35);
+  }
+}
+
+.closing h2 {
+  font-size: clamp(34px, 5.6vw, 72px);
+  max-width: 18ch;
+  margin: 14px auto 22px;
+}
+
+.closing .lead {
+  max-width: 40ch;
+  margin: 0 auto;
+}
+
+/* ---- Visual design: stroke berlapis kayak speaker ---- */
+.vd {
+  position: relative;
+  display: inline-block;
+  margin-right: .12em;
+  white-space: nowrap;
+  color: var(--accent);
+}
+
+.vd i {
+  position: absolute;
+  inset: 0;
+  font-style: normal;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent);
+  pointer-events: none;
+  opacity: 0;
+  animation: vdWave 2.4s cubic-bezier(.2, .6, .3, 1) infinite;
+}
+
+.vd i:nth-child(2) {
+  animation-delay: .8s;
+}
+
+.vd i:nth-child(3) {
+  animation-delay: 1.6s;
+}
+
+@keyframes vdWave {
+  0% {
+    transform: scale(1);
+    opacity: .85;
+  }
+
+  100% {
+    transform: scale(1.28);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .vd i {
+    display: none;
   }
 }
