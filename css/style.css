@@ -1645,6 +1645,77 @@ h3 {
 }
 
 
+/* ---- Tali kusut -> lurus (weekly rhythm) ---- */
+.rope {
+  position: relative;
+  height: 280px;
+  margin: 0 0 8px;
+}
+
+.ropesvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ropesvg path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ropesvg .r0 {
+  stroke: rgba(0, 0, 0, .55);
+  stroke-width: 9;
+}
+
+.ropesvg .r1 {
+  stroke: var(--accent);
+  stroke-width: 5;
+}
+
+.rk {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 8px 12px;
+  border-radius: 999px;
+  will-change: transform;
+  box-shadow: 0 6px 14px -6px rgba(0, 0, 0, .6);
+}
+
+.rk.main {
+  box-shadow: 0 0 0 calc(var(--e, 0) * 3px) var(--accent), 0 6px 14px -6px rgba(0, 0, 0, .6);
+}
+
+.rope-note {
+  color: var(--dark-ink2);
+  font-size: 15px;
+  margin: 0 0 32px;
+}
+
+.rope-note b {
+  color: var(--dark-ink);
+}
+
+@media(max-width:700px) {
+  .rope {
+    height: 460px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .ropesvg .r1 {
+    stroke-dasharray: none;
+  }
+}
+
 /* ---- Priority interaktif ---- */
 .prio {
   list-style: none;

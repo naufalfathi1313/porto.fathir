@@ -79,6 +79,77 @@
     if (e.key === 'Escape') closeLb();
   });
 
+  // tali kusut -> lurus: kata kegiatan numpuk, jadi urut pas priority list dibuat
+  var rope = document.getElementById('rope'),
+    ropeChips = [].slice.call(rope.querySelectorAll('.rk')),
+    ropeP = document.getElementById('ropePath'),
+    ropeB = document.getElementById('ropeBack'),
+    ropeShow = false,
+    ropeE = 0,
+    ROPE_N = 120,
+    TAU = Math.PI * 2;
+
+  function tangle(s, W, H) {
+    return [W * (.5 + .36 * Math.sin(TAU * 3 * s + .6) + .12 * Math.sin(TAU * 8 * s + 1.3)),
+      H * (.5 + .34 * Math.sin(TAU * 4 * s + 2.1) + .12 * Math.sin(TAU * 11 * s + .4))
+    ];
+  }
+
+  function straight(s, W, H, vert) {
+    return vert ? [26, 26 + s * (H - 52)] : [28 + s * (W - 56), H / 2];
+  }
+
+  function drawRope(time) {
+    var W = rope.clientWidth,
+      H = rope.clientHeight,
+      vert = W < 700,
+      e = ropeE * ropeE * (3 - 2 * ropeE),
+      wob = reduce ? 0 : (1 - e),
+      d = '';
+    for (var j = 0; j <= ROPE_N; j++) {
+      var s = j / ROPE_N,
+        a = tangle(s, W, H),
+        b = straight(s, W, H, vert),
+        x = a[0] + (b[0] - a[0]) * e + Math.sin(time / 520 + s * 22) * 6 * wob,
+        y = a[1] + (b[1] - a[1]) * e + Math.cos(time / 610 + s * 19) * 6 * wob;
+      d += (j ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
+    }
+    ropeP.setAttribute('d', d);
+    ropeB.setAttribute('d', d);
+    ropeChips.forEach(function(c, i) {
+      var a = tangle(+c.dataset.t, W, H),
+        sl = (i + .5) / ropeChips.length,
+        b = straight(sl, W, H, vert),
+        w = c.offsetWidth,
+        hh = c.offsetHeight;
+      // posisi akhir: di atas/bawah tali (desktop) atau di kanan tali (mobile)
+      if (vert) b = [b[0] + 20 + w / 2, b[1]];
+      else b[1] += (i % 2 ? 30 : -30);
+      var ang = Math.sin(i * 12.9898) * 38 * (1 - e),
+        x = a[0] + (b[0] - a[0]) * e + Math.sin(time / 700 + i) * 5 * wob,
+        y = a[1] + (b[1] - a[1]) * e + Math.cos(time / 800 + i * 2) * 5 * wob;
+      if (i === 0) c.style.setProperty('--e', e.toFixed(2));
+      c.style.transform = 'translate(' + (x - w / 2).toFixed(1) + 'px,' + (y - hh / 2).toFixed(1) + 'px) rotate(' + ang.toFixed(1) + 'deg)';
+    });
+  }
+
+  function ropeLoop(t) {
+    if (!ropeShow) return;
+    drawRope(t);
+    requestAnimationFrame(ropeLoop);
+  }
+  new IntersectionObserver(function(es) {
+    ropeShow = es[0].isIntersecting;
+    if (ropeShow && !reduce) requestAnimationFrame(ropeLoop);
+  }).observe(rope);
+
+  function updateRope() {
+    var r = rope.getBoundingClientRect(),
+      vh = window.innerHeight;
+    ropeE = reduce ? 1 : Math.min(Math.max((vh * .85 - r.top) / (vh * .5), 0), 1);
+    if (reduce) drawRope(0);
+  }
+
   // priority interaktif: tap item -> naik ke atas, bar nyesuain urutan
   var prio = document.getElementById('prio'),
     widths = [1, .78, .55, .32];
@@ -190,6 +261,7 @@
       p1.classList.toggle('on', p > .12);
       p2.classList.toggle('on', p > .5);
     }
+    updateRope();
     // timeline fill
     var tr = tl.getBoundingClientRect(),
       tp = Math.min(Math.max((vh * .6 - tr.top) / tr.height, 0), 1);
