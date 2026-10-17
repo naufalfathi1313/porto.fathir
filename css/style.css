@@ -1161,6 +1161,44 @@ h3 {
   padding: 16px
 }
 
+/* kartu Imigrasi: tile utama + chip peran */
+.facts.imi .fact.big {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  background: var(--ink);
+  color: #fff;
+  padding: 26px 28px
+}
+
+.facts.imi .fact.big .v {
+  font-size: clamp(56px, 6vw, 76px);
+  color: var(--accent)
+}
+
+.facts.imi .fact.big .l {
+  color: rgba(255, 255, 255, .72);
+  font-size: 16px;
+  margin: 0
+}
+
+.roles {
+  grid-column: 1/-1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px
+}
+
+.roles span {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--bg2);
+  color: var(--ink2)
+}
+
 @media(max-width:860px) {
   .wcard {
     grid-template-columns: 1fr
