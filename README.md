@@ -12,6 +12,7 @@ Buka `index.html` di browser buat lihat hasilnya. Semua file harus tetap di fold
 | `assets/fonts/` | Font Uncut Sans |
 | `assets/img/` | Foto profil dan screenshot kalender |
 | `assets/video/` | Video 10 detik buat kartu Konten dan Publikasi (lihat `README.txt` di dalamnya) |
+| `assets/icons/` | Slot icon buat Tools & Data (lihat `README.txt` di dalamnya) |
 
 ## Yang paling sering diedit
 

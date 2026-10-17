@@ -283,6 +283,7 @@ h3 {
 }
 
 .hero .wrap {
+  width: 100%;
   display: grid;
   grid-template-columns: 1.25fr 1fr;
   gap: clamp(32px, 5vw, 72px);
@@ -429,7 +430,7 @@ h3 {
 }
 
 .portrait .tag span {
-  color: var(--ink3);
+  color: var(--ink2);
   font-weight: 500
 }
 
@@ -527,7 +528,7 @@ h3 {
 }
 
 .bignum .n {
-  font-size: clamp(110px, 22vw, 300px);
+  font-size: clamp(84px, 22vw, 300px);
   font-weight: 800;
   letter-spacing: -.06em;
   line-height: .9;
@@ -594,7 +595,7 @@ h3 {
   padding-top: 52px
 }
 
-@media(min-width:861px) and (max-height:860px) {
+@media(min-width:1180px) and (min-height:660px) and (max-height:860px) {
   .pillars .head h2 {
     font-size: clamp(40px, 6vw, 72px)
   }
@@ -622,7 +623,7 @@ h3 {
   }
 }
 
-@media(min-width:861px) and (max-height:760px) {
+@media(min-width:1180px) and (min-height:660px) and (max-height:760px) {
   .pillars .head .lead {
     display: none
   }
@@ -664,11 +665,12 @@ h3 {
 
 .pgrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px
 }
 
 .pcard {
+  min-width: 0;
   background: var(--dark2);
   border-radius: var(--r);
   padding: clamp(24px, 3vw, 40px);
@@ -741,7 +743,7 @@ h3 {
   color: var(--dark-ink)
 }
 
-@media(max-width:860px) {
+@media(max-width:1179px), (max-height:659px) {
   .pillars {
     height: auto
   }
@@ -855,7 +857,7 @@ h3 {
 }
 
 .k1 {
-  background: #3a6df0
+  background: #2f5fe0
 }
 
 .k2 {
@@ -864,11 +866,13 @@ h3 {
 }
 
 .k3 {
-  background: #b45cf0
+  background: #b45cf0;
+  color: #1d1d1f
 }
 
 .k4 {
-  background: #2fb344
+  background: #2fb344;
+  color: #1d1d1f
 }
 
 .note {
@@ -963,7 +967,9 @@ h3 {
 
 .lb img {
   max-width: min(1400px, 100%);
-  max-height: 100%;
+  max-height: calc(100vh - 2 * clamp(16px, 4vw, 56px));
+  max-height: calc(100dvh - 2 * clamp(16px, 4vw, 56px));
+  object-fit: contain;
   width: auto;
   height: auto;
   border-radius: 16px;
@@ -1022,7 +1028,7 @@ h3 {
 
 .nums {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px
 }
 
@@ -1054,14 +1060,25 @@ h3 {
 
 @media(max-width:900px) {
   .nums {
-    grid-template-columns: 1fr 1fr
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+  }
+}
+
+@media(max-width:380px) {
+  .ncard {
+    padding: 20px
   }
 }
 
 /* ---------- work ---------- */
 .work {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px
+}
+
+.wcard>* {
+  min-width: 0
 }
 
 .wcard {
@@ -1124,7 +1141,7 @@ h3 {
 
 .facts {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   align-content: start
 }
@@ -1143,6 +1160,7 @@ h3 {
 }
 
 .fact .l {
+  overflow-wrap: anywhere;
   font-size: 14px;
   color: var(--ink3);
   margin-top: 8px
@@ -1159,6 +1177,44 @@ h3 {
   font-size: 14px;
   text-align: center;
   padding: 16px
+}
+
+/* kartu Imigrasi: tile utama + chip peran */
+.facts.imi .fact.big {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  background: var(--ink);
+  color: #fff;
+  padding: 26px 28px
+}
+
+.facts.imi .fact.big .v {
+  font-size: clamp(56px, 6vw, 76px);
+  color: var(--accent)
+}
+
+.facts.imi .fact.big .l {
+  color: rgba(255, 255, 255, .72);
+  font-size: 16px;
+  margin: 0
+}
+
+.roles {
+  grid-column: 1/-1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px
+}
+
+.roles span {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--bg2);
+  color: var(--ink2)
 }
 
 @media(max-width:860px) {
@@ -1481,9 +1537,70 @@ h3 {
   font-size: 14px
 }
 
-@media(max-width:860px) {
+/* ---------- tools & data: icon slots ---------- */
+.tools {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px
+}
+
+.trow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px
+}
+
+.tool .ico {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  background: var(--bg2);
+  display: grid;
+  place-items: center;
+  transition: transform .4s cubic-bezier(.2, .8, .2, 1)
+}
+
+.tool:hover .ico {
+  transform: translateY(-3px) scale(1.06)
+}
+
+.tool .ico b {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink3);
+  letter-spacing: -.02em
+}
+
+.tool .ico img {
+  position: absolute;
+  inset: 14px;
+  width: calc(100% - 28px);
+  height: calc(100% - 28px);
+  object-fit: contain
+}
+
+.tool .ico.has b {
+  visibility: hidden
+}
+
+@media(max-width:1000px) {
   .skills {
     grid-template-columns: 1fr
+  }
+}
+
+@media(max-width:380px) {
+  .wcard {
+    padding: 22px
+  }
+
+  .fact {
+    padding: 16px
+  }
+
+  .fact .v {
+    font-size: 24px
   }
 }
 
@@ -1569,6 +1686,10 @@ h3 {
     animation: none !important
   }
 
+  html {
+    scroll-behavior: auto
+  }
+
   .rv,
   .word,
   .portrait,
@@ -1576,6 +1697,10 @@ h3 {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important
+  }
+
+  .closing .cookie {
+    filter: drop-shadow(0 14px 14px rgba(70, 40, 10, .22)) !important
   }
 
   .calshot,
@@ -1871,8 +1996,13 @@ h3 {
 
 /* ---- Closing statement ---- */
 .closing {
-  padding: clamp(48px, 6vw, 80px) 0;
+  padding: clamp(8px, 1.5vw, 20px) 0 clamp(48px, 6vw, 80px);
   text-align: center;
+}
+
+/* section sebelum cookie: rapatin jaraknya */
+#skills {
+  padding-bottom: clamp(16px, 2.5vw, 32px);
 }
 
 .closing .cookie {
@@ -1894,6 +2024,11 @@ h3 {
 }
 
 /* ---- Visual design: stroke berlapis kayak speaker ---- */
+/* gelombangnya membesar sampai lewat tepi di HP kecil; potong biar gak ada scroll samping */
+.contact {
+  overflow-x: clip;
+}
+
 .vd {
   position: relative;
   display: inline-block;
@@ -1910,15 +2045,15 @@ h3 {
   -webkit-text-stroke: 1.5px var(--accent);
   pointer-events: none;
   opacity: 0;
-  animation: vdWave 2.4s cubic-bezier(.2, .6, .3, 1) infinite;
+  animation: vdWave 4.8s cubic-bezier(.2, .6, .3, 1) infinite;
 }
 
 .vd i:nth-child(2) {
-  animation-delay: .8s;
+  animation-delay: 1.6s;
 }
 
 .vd i:nth-child(3) {
-  animation-delay: 1.6s;
+  animation-delay: 3.2s;
 }
 
 @keyframes vdWave {
@@ -1979,7 +2114,7 @@ h3 {
 }
 
 /* layar pendek: pilar dipadatkan biar kartu tetap muat dalam satu layar */
-@media(min-width:861px) and (max-height:820px) {
+@media(min-width:1180px) and (min-height:660px) and (max-height:820px) {
   .pcard {
     padding: 22px 28px;
   }
