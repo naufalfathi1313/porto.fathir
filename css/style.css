@@ -1956,8 +1956,13 @@ h3 {
 
 /* ---- Closing statement ---- */
 .closing {
-  padding: clamp(48px, 6vw, 80px) 0;
+  padding: clamp(8px, 1.5vw, 20px) 0 clamp(48px, 6vw, 80px);
   text-align: center;
+}
+
+/* section sebelum cookie: rapatin jaraknya */
+#skills {
+  padding-bottom: clamp(16px, 2.5vw, 32px);
 }
 
 .closing .cookie {
