@@ -1951,37 +1951,49 @@ h3 {
   margin: 0 auto;
 }
 
-/* ---- Visual design: denyut halus kayak detak jantung ---- */
+/* ---- Visual design: stroke berlapis kayak speaker ---- */
 .vd {
+  position: relative;
   display: inline-block;
   margin-right: .12em;
   white-space: nowrap;
   color: var(--accent);
-  transform-origin: 50% 60%;
-  animation: vdBeat 2.6s ease-in-out infinite;
 }
 
-@keyframes vdBeat {
-  0%, 40%, 100% {
+.vd i {
+  position: absolute;
+  inset: 0;
+  font-style: normal;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--accent);
+  pointer-events: none;
+  opacity: 0;
+  animation: vdWave 4.8s cubic-bezier(.2, .6, .3, 1) infinite;
+}
+
+.vd i:nth-child(2) {
+  animation-delay: 1.6s;
+}
+
+.vd i:nth-child(3) {
+  animation-delay: 3.2s;
+}
+
+@keyframes vdWave {
+  0% {
     transform: scale(1);
+    opacity: .85;
   }
 
-  10% {
-    transform: scale(1.012);
-  }
-
-  20% {
-    transform: scale(1);
-  }
-
-  28% {
-    transform: scale(1.018);
+  100% {
+    transform: scale(1.28);
+    opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion:reduce) {
-  .vd {
-    animation: none;
+  .vd i {
+    display: none;
   }
 }
 
