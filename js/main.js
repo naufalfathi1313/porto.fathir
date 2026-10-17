@@ -15,6 +15,7 @@
       } else if (e.target.dataset.replay !== undefined) {
         // angka besar ngitung lagi tiap balik ke layar
         e.target._done = false;
+        e.target._run = (e.target._run || 0) + 1;
         e.target.textContent = '0';
       }
     });
@@ -35,7 +36,7 @@
       dec = +(el.dataset.dec || 0),
       suf = el.dataset.suffix || '';
     if (reduce) {
-      el.textContent = to.toFixed(dec) + suf;
+      el.textContent = to.toFixed(dec).replace('.', ',') + suf;
       return;
     }
     var t0 = null,
@@ -45,7 +46,7 @@
       if (!t0) t0 = t;
       var p = Math.min((t - t0) / dur, 1),
         e = 1 - Math.pow(1 - p, 4);
-      el.textContent = (to * e).toFixed(dec) + suf;
+      el.textContent = (to * e).toFixed(dec).replace('.', ',') + suf;
       if (p < 1 && el._run === run) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
@@ -75,8 +76,13 @@
   lbx.addEventListener('click', function(e) {
     if (e.target !== lbImg) closeLb();
   });
-  lbx.addEventListener('keydown', function(e) {
+  document.addEventListener('keydown', function(e) {
+    if (!lbx.classList.contains('open')) return;
     if (e.key === 'Escape') closeLb();
+    else if (e.key === 'Tab') {
+      e.preventDefault();
+      lbClose.focus();
+    }
   });
 
   // tali kusut -> lurus: kata kegiatan numpuk, jadi urut pas priority list dibuat
@@ -123,7 +129,7 @@
   function drawRope(time) {
     var W = rope.clientWidth,
       H = rope.clientHeight,
-      vert = W < 700,
+      vert = window.innerWidth <= 700,
       c = Math.min(Math.max(ropeS, 0), 1),
       e = c * c * (3 - 2 * c) + (ropeS > 1 ? (ropeS - 1) * .9 : 0),
       wob = reduce ? 0 : Math.min(Math.max(1 - c, 0), 1),
@@ -155,6 +161,8 @@
           a[1] + (b[1] - a[1]) * e + Math.cos(time / 800 + i * 2) * 5 * wob
         ];
       push(p, pk, 140, 34);
+      // di HP kata yang hanyut gak boleh keluar dari kotak tali (bikin scroll samping)
+      if (vert) p[0] = Math.min(Math.max(p[0], w / 2), W - w / 2);
       if (i === 0) c.style.setProperty('--e', Math.min(Math.max(e, 0), 1).toFixed(2));
       c.style.transform = 'translate(' + (p[0] - w / 2).toFixed(1) + 'px,' + (p[1] - hh / 2).toFixed(1) + 'px) rotate(' + ang.toFixed(1) + 'deg)';
     });
@@ -214,7 +222,9 @@
       tops = items.map(function(li) {
         return li.getBoundingClientRect().top;
       });
+    var hadFocus = first && first.contains(document.activeElement);
     if (first) prio.insertBefore(first, prio.firstChild);
+    if (hadFocus) first.querySelector('button').focus();
     [].slice.call(prio.children).forEach(function(li, i) {
       var bar = li.querySelector('i');
       bar.style.setProperty('--w', widths[i]);
@@ -238,13 +248,21 @@
   });
 
   // slot video 10 detik: baru muncul kalau file-nya ada, main sekali pas kelihatan
+  var pinMQ = window.matchMedia('(min-width:1180px) and (min-height:660px)');
+
+  function tryPlay(v) {
+    if (!v._vis || !v.paused) return;
+    var card = v.closest('.pcard');
+    if (pinMQ.matches && card && !card.classList.contains('on')) return;
+    if (!v.src) v.src = v.dataset.src;
+    if (!v.ended) v.play().catch(function() {});
+  }
   var vio = new IntersectionObserver(function(es) {
     es.forEach(function(e) {
       var v = e.target;
-      if (e.isIntersecting) {
-        if (!v.src) v.src = v.dataset.src;
-        if (!v.ended) v.play().catch(function() {});
-      } else v.pause();
+      v._vis = e.isIntersecting;
+      if (e.isIntersecting) tryPlay(v);
+      else v.pause();
     });
   }, {
     threshold: .4
@@ -258,7 +276,6 @@
     snd.addEventListener('click', function() {
       v.muted = !v.muted;
       snd.setAttribute('aria-pressed', String(!v.muted));
-      snd.setAttribute('aria-label', v.muted ? 'Nyalain suara' : 'Matiin suara');
       if (!v.muted) v.play().catch(function() {});
     });
     // sekali main, tanpa loop; tap videonya buat muter ulang
@@ -311,11 +328,14 @@
     var pr = pil.getBoundingClientRect(),
       span = pil.offsetHeight - vh;
     var p = span > 0 ? Math.min(Math.max(-pr.top / span, 0), 1) : 1;
-    if (window.innerWidth > 860) {
+    if (pinMQ.matches) {
       neq.parentNode.style.setProperty('--p', reduce ? 1 : Math.min(p * 6, 1));
       p1.classList.toggle('on', p > .12);
       p2.classList.toggle('on', p > .5);
+    } else {
+      neq.parentNode.style.removeProperty('--p');
     }
+    pillVids.forEach(tryPlay);
     updateRope();
     // timeline fill
     var tr = tl.getBoundingClientRect(),
@@ -338,6 +358,7 @@
     });
     ticking = false;
   }
+  var pillVids = [].slice.call(document.querySelectorAll('.pcard video'));
   window.addEventListener('scroll', function() {
     if (!ticking) {
       ticking = true;
