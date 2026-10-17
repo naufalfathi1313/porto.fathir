@@ -154,6 +154,10 @@
     neq = document.getElementById('neq'),
     p1 = document.getElementById('p1'),
     p2 = document.getElementById('p2'),
+    closing = document.getElementById('closing'),
+    chips = [].slice.call(document.querySelectorAll('#chips .chip')).sort(function(a, b) {
+      return a.dataset.r - b.dataset.r;
+    }),
     tl = document.getElementById('tl'),
     tlfill = document.getElementById('tlfill'),
     links = [].slice.call(document.querySelectorAll('.nav ul a')),
@@ -190,6 +194,13 @@
     var tr = tl.getBoundingClientRect(),
       tp = Math.min(Math.max((vh * .6 - tr.top) / tr.height, 0), 1);
     tlfill.style.height = (tp * (tr.height - 16)) + 'px';
+    // cookie: cokelatnya nambah seiring scroll
+    var cr = closing.getBoundingClientRect(),
+      cp = reduce ? 1 : Math.min(Math.max((vh * .8 - cr.top) / (vh * .35 + cr.height / 2), 0), 1),
+      shown = 1 + cp * (chips.length - 1);
+    chips.forEach(function(c, i) {
+      c.style.setProperty('--t', Math.min(Math.max(shown - i, 0), 1).toFixed(3));
+    });
     // active nav
     links.forEach(function(a) {
       var s = document.querySelector(a.getAttribute('href'));

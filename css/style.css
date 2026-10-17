@@ -1805,21 +1805,17 @@ h3 {
 }
 
 .closing .cookie {
-  width: clamp(84px, 9vw, 112px);
+  width: clamp(140px, 15vw, 190px);
+  overflow: visible;
   margin: 0 auto 14px;
   display: block;
 }
 
-.closing .chip1 {
+.closing .chip {
   transform-box: fill-box;
   transform-origin: center;
-  animation: chipPulse 2.4s var(--ease) infinite;
-}
-
-@keyframes chipPulse {
-  50% {
-    transform: scale(1.35);
-  }
+  transform: scale(calc(.3 + var(--t, 1) * .7));
+  opacity: var(--t, 1);
 }
 
 .closing h2 {
