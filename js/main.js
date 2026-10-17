@@ -226,8 +226,8 @@
     p1 = document.getElementById('p1'),
     p2 = document.getElementById('p2'),
     closing = document.getElementById('closing'),
-    chips = [].slice.call(document.querySelectorAll('#chips .chip')).sort(function(a, b) {
-      return a.dataset.r - b.dataset.r;
+    chips = [].slice.call(document.querySelectorAll('#chips circle')).sort(function(a, b) {
+      return a.dataset.o - b.dataset.o;
     }),
     tl = document.getElementById('tl'),
     tlfill = document.getElementById('tlfill'),
@@ -271,7 +271,8 @@
       cp = reduce ? 1 : Math.min(Math.max((vh * .8 - cr.top) / (vh * .35 + cr.height / 2), 0), 1),
       shown = 1 + cp * (chips.length - 1);
     chips.forEach(function(c, i) {
-      c.style.setProperty('--t', Math.min(Math.max(shown - i, 0), 1).toFixed(3));
+      var t = Math.min(Math.max(shown - i, 0), 1);
+      c.setAttribute('r', (c.dataset.r * (1 - Math.pow(1 - t, 3))).toFixed(1));
     });
     // active nav
     links.forEach(function(a) {
