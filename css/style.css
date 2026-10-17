@@ -1522,25 +1522,21 @@ h3 {
 /* ---------- tools & data: icon slots ---------- */
 .tools {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px 10px;
+  gap: 14px;
   margin-top: 22px
 }
 
-.tool {
-  margin: 0;
+.trow {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  text-align: center
+  flex-wrap: wrap;
+  gap: 12px
 }
 
 .tool .ico {
   position: relative;
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
   background: var(--bg2);
   display: grid;
   place-items: center;
@@ -1554,27 +1550,20 @@ h3 {
 .tool .ico b {
   font-size: 15px;
   font-weight: 700;
-  color: var(--ink2);
+  color: var(--ink3);
   letter-spacing: -.02em
 }
 
 .tool .ico img {
   position: absolute;
-  inset: 11px;
-  width: calc(100% - 22px);
-  height: calc(100% - 22px);
+  inset: 14px;
+  width: calc(100% - 28px);
+  height: calc(100% - 28px);
   object-fit: contain
 }
 
 .tool .ico.has b {
   visibility: hidden
-}
-
-.tool figcaption {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink2);
-  line-height: 1.25
 }
 
 @media(max-width:860px) {
