@@ -1805,17 +1805,10 @@ h3 {
 }
 
 .closing .cookie {
-  width: clamp(140px, 15vw, 190px);
-  overflow: visible;
+  width: clamp(190px, 21vw, 270px);
+  filter: drop-shadow(0 14px 14px rgba(70, 40, 10, .22));
   margin: 0 auto 14px;
   display: block;
-}
-
-.closing .chip {
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: scale(calc(.3 + var(--t, 1) * .7));
-  opacity: var(--t, 1);
 }
 
 .closing h2 {
