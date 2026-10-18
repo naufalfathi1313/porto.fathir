@@ -62,6 +62,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 64px;
   -webkit-text-size-adjust: 100%
 }
 
@@ -223,8 +224,10 @@ h3 {
   transition: transform .3s var(--spring)
 }
 
-.nav .cta:hover {
-  transform: scale(1.05)
+@media(hover:hover) {
+  .nav .cta:hover {
+    transform: scale(1.05)
+  }
 }
 
 .progress {
@@ -368,8 +371,10 @@ h3 {
   transition: transform .35s var(--spring), background .2s
 }
 
-.btn:hover {
-  transform: scale(1.04)
+@media(hover:hover) {
+  .btn:hover {
+    transform: scale(1.04)
+  }
 }
 
 .btn:active {
@@ -1045,9 +1050,11 @@ h3 {
   transition: background .3s var(--ease), transform .4s var(--spring);
 }
 
-.calfull:hover {
-  background: rgba(255, 255, 255, .18);
-  transform: scale(1.04);
+@media(hover:hover) {
+  .calfull:hover {
+    background: rgba(255, 255, 255, .18);
+    transform: scale(1.04);
+  }
 }
 
 .calfull:focus-visible {
@@ -1223,6 +1230,29 @@ h3 {
   opacity: 1
 }
 
+.lbpan {
+  display: contents
+}
+
+/* HP: kalender asli kekecilan kalau dipaksa muat selebar layar, jadi tampil lebih besar dan bisa digeser */
+@media(max-width:700px) {
+  .lbpan {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    border-radius: 16px
+  }
+
+  .lb img {
+    max-width: none;
+    max-height: none;
+    height: min(70vh, 600px);
+    height: min(70dvh, 600px);
+    border-radius: 0
+  }
+}
+
 .lb .x {
   position: absolute;
   top: 16px;
@@ -1325,9 +1355,11 @@ h3 {
   transition: transform .6s var(--ease), box-shadow .6s var(--ease)
 }
 
-.wcard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 0 1px var(--line), 0 30px 60px -30px rgba(0, 0, 0, .25)
+@media(hover:hover) {
+  .wcard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 0 1px var(--line), 0 30px 60px -30px rgba(0, 0, 0, .25)
+  }
 }
 
 .wcard h3 {
@@ -1436,10 +1468,27 @@ h3 {
   object-fit: cover
 }
 
-/* caption thumbnail di atas biar teks di video tidak ketutup */
+/* views di bawah thumbnail, biar nggak nutup muka atau teks videonya */
 .imgal figure:not(.wide) figcaption {
-  top: 10px;
-  bottom: auto
+  position: static;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: var(--ink2)
+}
+
+.imgal figcaption .eye {
+  flex: none;
+  color: var(--ink3)
+}
+
+.imgal figcaption b {
+  color: var(--ink)
 }
 
 .imgal .wide {
@@ -1548,8 +1597,10 @@ h3 {
   transition: transform .5s var(--spring)
 }
 
-.mcard:hover {
-  transform: translateY(-6px) scale(1.01)
+@media(hover:hover) {
+  .mcard:hover {
+    transform: translateY(-6px) scale(1.01)
+  }
 }
 
 .mcard .eyebrow {
@@ -1881,8 +1932,10 @@ h3 {
   transition: transform .4s cubic-bezier(.2, .8, .2, 1)
 }
 
-.tool:hover .ico {
-  transform: translateY(-3px) scale(1.06)
+@media(hover:hover) {
+  .tool:hover .ico {
+    transform: translateY(-3px) scale(1.06)
+  }
 }
 
 .tool .ico b {
@@ -1953,9 +2006,11 @@ h3 {
   transition: background .3s, transform .4s var(--spring)
 }
 
-.cgrid a:hover {
-  background: #222226;
-  transform: translateY(-3px)
+@media(hover:hover) {
+  .cgrid a:hover {
+    background: #222226;
+    transform: translateY(-3px)
+  }
 }
 
 .cgrid .l {
@@ -1970,19 +2025,6 @@ h3 {
   font-weight: 600;
   margin-top: 6px;
   overflow-wrap: break-word
-}
-
-.foot {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-top: 80px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, .1);
-  color: var(--dark-ink2);
-  font-size: 13px;
-  text-align: left
 }
 
 @media(max-width:860px) {
@@ -2155,7 +2197,7 @@ h3 {
 
 @media(max-width:700px) {
   .rope {
-    height: 460px;
+    height: 400px;
   }
 }
 
@@ -2260,8 +2302,13 @@ h3 {
   transition: opacity .5s var(--ease);
 }
 
-.vslot.ready video {
+.vslot.ready video,
+.vslot.haspost video {
   opacity: 1;
+}
+
+.vslot.haspost figcaption {
+  display: none;
 }
 
 .vslot figcaption {
@@ -2474,5 +2521,56 @@ h3 {
 
   .pbody .vslot {
     width: min(250px, 30vh);
+  }
+}
+
+/* ---- HP: rapetin jarak antar section, rapihin patahan baris ---- */
+@media(max-width:700px) {
+  .bnet-intro {
+    padding-top: 84px
+  }
+
+  .pillars .stick {
+    padding: 24px 0 8px
+  }
+
+  .quote {
+    padding: 64px 0
+  }
+
+  .ritme {
+    padding-bottom: 64px
+  }
+
+  .bignum {
+    padding-bottom: 72px
+  }
+
+  .block {
+    padding: 72px 0
+  }
+
+  .block .head {
+    margin-bottom: 32px
+  }
+
+  .contact {
+    padding-top: 84px
+  }
+
+  h1,
+  h2,
+  h3,
+  .bignum .cap {
+    text-wrap: balance
+  }
+
+  /* judul Visual design: patahan barisnya udah pas sama efek gelombangnya */
+  .contact h2 {
+    text-wrap: wrap
+  }
+
+  p {
+    text-wrap: pretty
   }
 }

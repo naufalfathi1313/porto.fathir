@@ -60,6 +60,7 @@
 
   function openLb() {
     lbImg.src = calOpen.dataset.full;
+    lbImg.parentNode.scrollLeft = 0;
     lbx.classList.add('open');
     lbx.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -199,8 +200,83 @@
     ];
   }
 
-  function straight(s, W, H, vert) {
-    return vert ? [26, 26 + s * (H - 52)] : [28 + s * (W - 56), H / 2];
+  function straight(s, W, H) {
+    return [28 + s * (W - 56), H / 2];
+  }
+
+  // HP: tali nggak lurus ke bawah, tapi meliuk kiri-kanan kayak jalan ular,
+  // kata-katanya jadi manik yang dironce di talinya (2 per baris)
+  var SN = { key: '', pts: null, len: null, top: 26, pad: 8, n: 5, gap: 0, r: 0 };
+
+  function snakeBuild(W, H) {
+    var key = W + 'x' + H;
+    if (SN.key === key) return;
+    SN.key = key;
+    SN.gap = (H - SN.top * 2) / (SN.n - 1);
+    SN.r = SN.gap / 2;
+    var pts = [],
+      len = [0],
+      j, k;
+    for (k = 0; k < SN.n; k++) {
+      var run = snakeRun(k, W),
+        y = SN.top + k * SN.gap;
+      for (j = 0; j <= 40; j++) pts.push([run[0] + (run[1] - run[0]) * j / 40, y + snakeSag(j / 40)]);
+      if (k === SN.n - 1) break;
+      // belokan setengah lingkaran ke baris berikutnya
+      var dir = k % 2 ? -1 : 1,
+        cx = k % 2 ? SN.pad + SN.r : W - SN.pad - SN.r;
+      for (j = 1; j < 16; j++) {
+        var a = Math.PI * (j / 16 - .5);
+        pts.push([cx + dir * Math.cos(a) * SN.r, y + SN.r + Math.sin(a) * SN.r]);
+      }
+    }
+    for (j = 1; j < pts.length; j++) len.push(len[j - 1] + Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]));
+    SN.pts = pts;
+    SN.len = len;
+  }
+
+  // ujung awal & akhir tiap baris (baris genap ke kanan, ganjil ke kiri)
+  function snakeRun(k, W) {
+    var xL = SN.pad + SN.r,
+      xR = W - SN.pad - SN.r;
+    if (k % 2) return [xR, k === SN.n - 1 ? SN.pad : xL];
+    return [k === 0 ? SN.pad : xL, k === SN.n - 1 ? W - SN.pad : xR];
+  }
+
+  // talinya agak melengkung ke bawah di tengah baris, kayak tali beneran
+  function snakeSag(u) {
+    return Math.sin(Math.PI * Math.min(Math.max(u, 0), 1)) * 7;
+  }
+
+  function snakeAt(s) {
+    var L = SN.len[SN.len.length - 1] * s,
+      lo = 0,
+      hi = SN.len.length - 1;
+    while (hi - lo > 1) {
+      var mid = (lo + hi) >> 1;
+      if (SN.len[mid] < L) lo = mid;
+      else hi = mid;
+    }
+    var t = (L - SN.len[lo]) / (SN.len[hi] - SN.len[lo] || 1);
+    return [SN.pts[lo][0] + (SN.pts[hi][0] - SN.pts[lo][0]) * t, SN.pts[lo][1] + (SN.pts[hi][1] - SN.pts[lo][1]) * t];
+  }
+
+  // posisi manik: 2 kata per baris, jaraknya dibagi rata sesuai lebar kata
+  function snakeChip(i, W) {
+    var k = Math.floor(i / 2),
+      ltr = k % 2 === 0,
+      mate = ropeChips[i % 2 ? i - 1 : i + 1],
+      w = ropeChips[i].offsetWidth,
+      wm = mate ? mate.offsetWidth : 0,
+      left = (i % 2 === 0) === ltr,
+      wl = left ? w : wm,
+      wr = left ? wm : w,
+      x0 = SN.pad + SN.r * .35,
+      x1 = W - SN.pad - SN.r * .35,
+      g = Math.max((x1 - x0 - wl - wr) / 3, 0),
+      x = left ? x0 + g + wl / 2 : x1 - g - wr / 2,
+      run = snakeRun(k, W);
+    return [x, SN.top + k * SN.gap + snakeSag((x - run[0]) / (run[1] - run[0]))];
   }
 
   // kursor/jari menyibak tali dan kata
@@ -225,11 +301,13 @@
       e = c * c * (3 - 2 * c) + (ropeS > 1 ? (ropeS - 1) * .9 : 0),
       wob = reduce ? 0 : Math.min(Math.max(1 - c, 0), 1),
       pk = reduce ? 0 : ptr.k * (.35 + .65 * wob),
+      N = vert ? 220 : ROPE_N,
       d = '';
-    for (var j = 0; j <= ROPE_N; j++) {
-      var s = j / ROPE_N,
+    if (vert) snakeBuild(W, H);
+    for (var j = 0; j <= N; j++) {
+      var s = j / N,
         a = tangle(s, W, H, time),
-        b = straight(s, W, H, vert),
+        b = vert ? snakeAt(s) : straight(s, W, H),
         p = [a[0] + (b[0] - a[0]) * e + Math.sin(time / 520 + s * 22) * 6 * wob,
           a[1] + (b[1] - a[1]) * e + Math.cos(time / 610 + s * 19) * 6 * wob
         ];
@@ -240,13 +318,11 @@
     ropeB.setAttribute('d', d);
     ropeChips.forEach(function(c, i) {
       var a = tangle(+c.dataset.t, W, H, time),
-        sl = (i + .5) / ropeChips.length,
-        b = straight(sl, W, H, vert),
+        b = vert ? snakeChip(i, W) : straight((i + .5) / ropeChips.length, W, H),
         w = c.offsetWidth,
         hh = c.offsetHeight;
-      // posisi akhir: di atas/bawah tali (desktop) atau di kanan tali (mobile)
-      if (vert) b = [b[0] + 20 + w / 2, b[1]];
-      else b[1] += (i % 2 ? 30 : -30);
+      // posisi akhir: di atas/bawah tali (desktop) atau jadi manik di tali yang meliuk (HP)
+      if (!vert) b[1] += (i % 2 ? 30 : -30);
       var ang = Math.sin(i * 12.9898) * 38 * (1 - e) + Math.sin(time / 900 + i * 1.7) * 9 * wob,
         p = [a[0] + (b[0] - a[0]) * e + Math.sin(time / 700 + i) * 5 * wob,
           a[1] + (b[1] - a[1]) * e + Math.cos(time / 800 + i * 2) * 5 * wob
