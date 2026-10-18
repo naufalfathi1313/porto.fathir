@@ -11,12 +11,7 @@
       if (e.isIntersecting) {
         e.target.classList.add('in');
         if (e.target.dataset.count) count(e.target);
-        if (e.target.dataset.replay === undefined) io.unobserve(e.target);
-      } else if (e.target.dataset.replay !== undefined) {
-        // angka besar ngitung lagi tiap balik ke layar
-        e.target._done = false;
-        e.target._run = (e.target._run || 0) + 1;
-        e.target.textContent = '0';
+        io.unobserve(e.target);
       }
     });
   }, {
