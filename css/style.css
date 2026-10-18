@@ -1678,18 +1678,31 @@ h3 {
   transition: opacity .8s var(--ease) 1.35s, transform .8s var(--spring) 1.35s, filter .8s var(--ease) 1.35s
 }
 
-.strikeh.in .strike s {
+.rv.in .strike s {
   color: rgba(29, 29, 31, .38)
 }
 
-.strikeh.in .strike s::after {
+.rv.in .strike s::after {
   transform: scaleX(1)
 }
 
-.strikeh.in .strike ins {
+.rv.in .strike ins {
   opacity: 1;
   transform: none;
   filter: none
+}
+
+/* di section gelap: teks dicoret terang & redup, kata gantinya kuning */
+.dark .strike s {
+  color: var(--dark-ink2)
+}
+
+.dark .rv.in .strike s {
+  color: rgba(245, 245, 247, .42)
+}
+
+.dark .strike ins {
+  color: var(--accent)
 }
 
 @media(max-width:600px) {
