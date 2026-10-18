@@ -59,7 +59,7 @@
     lbClose = document.getElementById('lbClose');
 
   function openLb() {
-    lbImg.src = document.getElementById('calImg').src;
+    lbImg.src = calOpen.dataset.full;
     lbx.classList.add('open');
     lbx.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -83,6 +83,97 @@
       e.preventDefault();
       lbClose.focus();
     }
+  });
+
+  // kalender: semua kegiatan awalnya numpuk berantakan, rapi ke slot harinya pas discroll
+  var calStage = document.getElementById('calStage'),
+    calEvs = [].slice.call(calStage.querySelectorAll('.ev')),
+    calMeta = [],
+    calCur = reduce ? 1 : 0,
+    calTgt = calCur,
+    calRun = false;
+
+  function calRand(i, k) {
+    var x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453;
+    return x - Math.floor(x);
+  }
+
+  // posisi asli (rapi) tiap kegiatan dari offset, jadi gak ngaruh sama transform .rv
+  function calMeasure() {
+    var small = window.innerWidth <= 760,
+      sw = calStage.clientWidth,
+      sh = calStage.clientHeight;
+    calEvs.forEach(function(e) {
+      e.style.transform = '';
+    });
+    calMeta = calEvs.map(function(e, i) {
+      var w = e.offsetWidth,
+        h = e.offsetHeight;
+      if (!w) return null;
+      var x = 0,
+        y = 0,
+        n = e;
+      while (n && n !== calStage) {
+        x += n.offsetLeft;
+        y += n.offsetTop;
+        n = n.offsetParent;
+      }
+      var sx = small ? 2.4 : 1,
+        sy = small ? 1.4 : 1,
+        cx = w * sx / 2 + calRand(i, 1) * (sw - w * sx),
+        cy = h * sy / 2 + calRand(i, 2) * (sh - h * sy);
+      return {
+        x: cx - (x + w / 2),
+        y: cy - (y + h / 2),
+        a: (calRand(i, 3) - .5) * 70,
+        sx: sx,
+        sy: sy,
+        d: (+e.parentNode.dataset.i + calRand(i, 4)) / 42 * .5
+      };
+    });
+  }
+
+  function calDraw(p) {
+    calStage.style.setProperty('--cp', p.toFixed(3));
+    calEvs.forEach(function(e, i) {
+      var m = calMeta[i];
+      if (!m) return;
+      var l = Math.min(Math.max((p - m.d) / .5, 0), 1),
+        k = 1 - Math.pow(1 - l, 3),
+        r = 1 - k;
+      e.style.transform = l >= 1 ? '' :
+        'translate(' + (m.x * r).toFixed(1) + 'px,' + (m.y * r).toFixed(1) + 'px) rotate(' + (m.a * r).toFixed(1) + 'deg) scale(' + (1 + (m.sx - 1) * r).toFixed(3) + ',' + (1 + (m.sy - 1) * r).toFixed(3) + ')';
+    });
+  }
+
+  function calTick() {
+    calCur += (calTgt - calCur) * .12;
+    if (Math.abs(calTgt - calCur) < .002) calCur = calTgt;
+    calDraw(calCur);
+    if (calCur !== calTgt) requestAnimationFrame(calTick);
+    else calRun = false;
+  }
+
+  function updateCal() {
+    var r = calStage.getBoundingClientRect(),
+      vh = window.innerHeight,
+      from = vh * .8,
+      to = Math.max(72, Math.min(vh - r.height - 24, vh * .35));
+    calTgt = reduce ? 1 : Math.min(Math.max((from - r.top) / (from - to), 0), 1);
+    if (calTgt !== calCur && !calRun) {
+      calRun = true;
+      requestAnimationFrame(calTick);
+    }
+  }
+  calMeasure();
+  calDraw(calCur);
+  window.addEventListener('resize', function() {
+    calMeasure();
+    calDraw(calCur);
+  });
+  window.addEventListener('load', function() {
+    calMeasure();
+    calDraw(calCur);
   });
 
   // tali kusut -> lurus: kata kegiatan numpuk, jadi urut pas priority list dibuat
@@ -337,6 +428,7 @@
     }
     pillVids.forEach(tryPlay);
     updateRope();
+    updateCal();
     // timeline fill
     var tr = tl.getBoundingClientRect(),
       tp = Math.min(Math.max((vh * .6 - tr.top) / tr.height, 0), 1);
