@@ -811,7 +811,7 @@ h3 {
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px
 }
 
@@ -882,14 +882,99 @@ h3 {
 }
 
 /* ---- Kalender: semua kegiatan numpuk berantakan, rapi ke slotnya pas discroll ---- */
+/* kartu 1: heading + kalender, kartu 2: priority */
+.plancard {
+  display: block;
+  min-height: 0;
+  overflow: hidden;
+  padding: clamp(18px, 2.8vw, 32px);
+}
+
+.plancard h3 {
+  max-width: 22ch;
+  margin: 14px 0 10px;
+  font-size: clamp(28px, 3.8vw, 44px);
+  line-height: 1.08;
+}
+
+.plancard p {
+  max-width: 58ch;
+}
+
+.plancard .week {
+  margin: 16px 0 8px;
+}
+
+.planhint {
+  margin-bottom: clamp(18px, 2.6vw, 28px);
+  font-size: 13px !important;
+}
+
 .calstage {
   --cp: 1;
   position: relative;
+}
+
+.prioCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(20px, 4vw, 56px);
+  align-items: center;
+  min-height: 0;
+}
+
+.prioCard h3 {
+  margin: 14px 0 10px;
+}
+
+.prioCard .prio {
+  margin: 0;
+}
+
+@media(max-width:760px) {
+  .prioCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* shine di jadwal ngampus (kuliah) = prioritas utama; muncul setelah kalendernya rapi */
+.k1.shine,
+.ev.k1 {
+  position: relative;
   overflow: hidden;
-  margin: 0 0 16px;
-  padding: clamp(14px, 2.4vw, 24px);
-  border-radius: var(--r);
-  background: var(--dark2);
+  box-shadow: 0 0 10px rgba(80, 125, 255, calc((var(--cp, 1) - .9) * 5));
+}
+
+.k1.shine::after,
+.ev.k1::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .6) 50%, transparent 62%) no-repeat;
+  background-size: 260% 100%;
+  background-position: 120% 0;
+  opacity: calc((var(--cp, 1) - .9) * 10);
+  animation: shine 4.2s ease-in-out infinite;
+}
+
+.cell:nth-child(7n+2) .ev::after { animation-delay: .15s; }
+.cell:nth-child(7n+3) .ev::after { animation-delay: .3s; }
+.cell:nth-child(7n+4) .ev::after { animation-delay: .45s; }
+.cell:nth-child(7n+5) .ev::after { animation-delay: .6s; }
+.cell:nth-child(7n+6) .ev::after { animation-delay: .75s; }
+.cell:nth-child(7n) .ev::after { animation-delay: .9s; }
+.ev.k1 + .ev.k1::after { animation-delay: .2s; }
+
+@keyframes shine {
+  0%, 55% {
+    background-position: 120% 0;
+  }
+
+  100% {
+    background-position: -20% 0;
+  }
 }
 
 .calbar {
@@ -1128,12 +1213,6 @@ h3 {
 
 .note b {
   color: var(--dark-ink)
-}
-
-@media(max-width:860px) {
-  .steps {
-    grid-template-columns: 1fr
-  }
 }
 
 /* ---------- numbers ---------- */
@@ -1829,6 +1908,11 @@ h3 {
   .lb img {
     transform: none !important;
     opacity: 1
+  }
+
+  .k1.shine::after,
+  .ev.k1::after {
+    display: none
   }
 
   .strike s::after {
