@@ -199,19 +199,49 @@ h3 {
 
 .nav ul {
   display: flex;
-  gap: 28px;
+  gap: 4px;
   list-style: none;
   font-size: 14px;
   color: var(--ink2)
 }
 
 .nav ul a {
-  transition: color .2s
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: color .2s, background .3s
 }
 
 .nav ul a:hover,
 .nav ul a.on {
   color: var(--ink)
+}
+
+/* section yang lagi dibaca: menunya nyala */
+.nav ul a.on {
+  background: rgba(0, 0, 0, .06)
+}
+
+.nav.ondark ul a.on {
+  background: rgba(255, 255, 255, .12)
+}
+
+/* di HP menunya disembunyiin, jadi nama section-nya muncul di sebelah logo */
+.here {
+  display: none
+}
+
+@keyframes hereIn {
+  from {
+    opacity: 0;
+    transform: translateY(100%)
+  }
+}
+
+@keyframes hereOut {
+  to {
+    opacity: 0;
+    transform: translateY(-100%)
+  }
 }
 
 .nav .cta {
@@ -244,6 +274,54 @@ h3 {
 @media(max-width:760px) {
   .nav ul {
     display: none
+  }
+
+  .here {
+    display: block;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 20px;
+    margin: 0 12px;
+    border-left: 1px solid var(--line);
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity .3s
+  }
+
+  .here.show {
+    opacity: 1
+  }
+
+  .nav.ondark .here {
+    border-left-color: rgba(255, 255, 255, .16)
+  }
+
+  .here span {
+    position: absolute;
+    left: 12px;
+    right: 0;
+    top: 0;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--ink2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: hereIn .5s var(--ease) both
+  }
+
+  .nav.ondark .here span {
+    color: var(--dark-ink2)
+  }
+
+  .here span.out {
+    animation: hereOut .35s var(--ease) both
+  }
+
+  .nav .cta {
+    flex: none
   }
 }
 
