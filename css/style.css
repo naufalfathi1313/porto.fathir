@@ -2027,6 +2027,14 @@ h3 {
   overflow-wrap: break-word
 }
 
+.cgrid .cico {
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .35))
+}
+
 @media(max-width:860px) {
   .cgrid {
     grid-template-columns: 1fr 1fr
@@ -2036,6 +2044,23 @@ h3 {
 @media(max-width:480px) {
   .cgrid {
     grid-template-columns: 1fr
+  }
+
+  /* 1 kolom: icon di kiri, teks di kanan biar kartunya nggak tinggi */
+  .cgrid a {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 14px;
+    align-items: center
+  }
+
+  .cgrid .cico {
+    grid-row: 1 / span 2;
+    margin: 0
+  }
+
+  .cgrid .v {
+    margin-top: 2px
   }
 }
 
