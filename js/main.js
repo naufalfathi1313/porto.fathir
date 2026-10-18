@@ -471,6 +471,12 @@
     tl = document.getElementById('tl'),
     tlfill = document.getElementById('tlfill'),
     links = [].slice.call(document.querySelectorAll('.nav ul a')),
+    here = document.getElementById('here'),
+    secs = [['about', 'About'], ['bnet', 'Thinking Proses'], ['result', 'Result'], ['Experience', 'Experience'], ['organisasi', 'Organisasi'], ['pendidikan', 'Education'], ['skills', 'Skills'], ['closing', ''], ['kontak', 'Contact']].map(function(s) {
+      return { el: document.getElementById(s[0]), label: s[1] };
+    }),
+    curLabel = null,
+    hereLabel = '',
     darks = [].slice.call(document.querySelectorAll('.dark')),
     ticking = false;
 
@@ -517,14 +523,39 @@
       var t = Math.min(Math.max(shown - i, 0), 1);
       c.setAttribute('r', (c.dataset.r * (1 - Math.pow(1 - t, 3))).toFixed(1));
     });
-    // active nav
-    links.forEach(function(a) {
-      var s = document.querySelector(a.getAttribute('href'));
-      if (!s) return;
-      var b = s.getBoundingClientRect();
-      a.classList.toggle('on', b.top < vh * .4 && b.bottom > vh * .4);
+    // section aktif: menu nav nyala, di HP namanya muncul di sebelah logo
+    var cur = '';
+    secs.forEach(function(s) {
+      if (s.el && s.el.getBoundingClientRect().top < vh * .4) cur = s.label;
     });
+    if (cur !== curLabel) {
+      curLabel = cur;
+      links.forEach(function(a) {
+        var on = !!cur && a.textContent === cur;
+        a.classList.toggle('on', on);
+        if (on) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    }
+    if ((y > 40 ? cur : '') !== hereLabel) setHere(y > 40 ? cur : '');
     ticking = false;
+  }
+
+  function setHere(label) {
+    hereLabel = label;
+    [].slice.call(here.children).forEach(function(c) {
+      if (c.classList.contains('out')) return;
+      c.classList.add('out');
+      setTimeout(function() {
+        c.remove();
+      }, reduce ? 0 : 350);
+    });
+    if (label) {
+      var s = document.createElement('span');
+      s.textContent = label;
+      here.appendChild(s);
+    }
+    here.classList.toggle('show', !!label);
   }
   var pillVids = [].slice.call(document.querySelectorAll('.pcard video'));
   // pilar yang dipin: kalau isinya lebih tinggi dari layar, kecilin dikit biar nggak kepotong
