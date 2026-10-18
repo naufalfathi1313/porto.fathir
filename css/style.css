@@ -937,16 +937,47 @@ h3 {
   }
 }
 
+/* warna kegiatan disamakan persis dengan kalender asli */
+.c-red {
+  background: #ed4a44;
+  color: #fff;
+}
+
+.c-orange {
+  background: #f19134;
+  color: #1d1d1f;
+}
+
+.c-yellow {
+  background: #f8e990;
+  color: #1d1d1f;
+}
+
+.c-white {
+  background: #c8bebf;
+  color: #1d1d1f;
+}
+
+.c-blue {
+  background: #5777c3;
+  color: #fff;
+}
+
+.c-lblue {
+  background: #a7c5e4;
+  color: #1d1d1f;
+}
+
 /* shine di jadwal ngampus (kuliah) = prioritas utama; muncul setelah kalendernya rapi */
-.k1.shine,
-.ev.k1 {
+.shine,
+.ev.c-red {
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(80, 125, 255, calc((var(--cp, 1) - .9) * 5));
 }
 
-.k1.shine::after,
-.ev.k1::after {
+.shine::after,
+.ev.c-red::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -965,7 +996,7 @@ h3 {
 .cell:nth-child(7n+5) .ev::after { animation-delay: .6s; }
 .cell:nth-child(7n+6) .ev::after { animation-delay: .75s; }
 .cell:nth-child(7n) .ev::after { animation-delay: .9s; }
-.ev.k1 + .ev.k1::after { animation-delay: .2s; }
+.ev.c-red + .ev.c-red::after { animation-delay: .2s; }
 
 @keyframes shine {
   0%, 55% {
@@ -1097,8 +1128,8 @@ h3 {
 }
 
 .ev.lb0 {
-  background: rgba(110, 150, 255, .2);
-  color: #a9c1ff;
+  background: #243d63;
+  color: #4a90f0;
 }
 
 .ev.more {
@@ -1910,8 +1941,8 @@ h3 {
     opacity: 1
   }
 
-  .k1.shine::after,
-  .ev.k1::after {
+  .shine::after,
+  .ev.c-red::after {
     display: none
   }
 
