@@ -451,6 +451,22 @@
     ticking = false;
   }
   var pillVids = [].slice.call(document.querySelectorAll('.pcard video'));
+  // pilar yang dipin: kalau isinya lebih tinggi dari layar, kecilin dikit biar nggak kepotong
+  var pilStick = pil.querySelector('.stick'),
+    pilWrap = pil.querySelector('.wrap');
+
+  function fitPillars() {
+    pilWrap.style.transform = '';
+    if (!pinMQ.matches) return;
+    var cs = getComputedStyle(pilStick),
+      room = pilStick.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - 32,
+      h = pilWrap.offsetHeight;
+    if (h > room) pilWrap.style.transform = 'scale(' + (room / h).toFixed(3) + ')';
+  }
+  fitPillars();
+  window.addEventListener('resize', fitPillars);
+  window.addEventListener('load', fitPillars);
+  if (document.fonts) document.fonts.ready.then(fitPillars);
   window.addEventListener('scroll', function() {
     if (!ticking) {
       ticking = true;

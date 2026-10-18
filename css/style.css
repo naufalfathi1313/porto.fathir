@@ -1464,6 +1464,28 @@ h3 {
   font-size: 13px
 }
 
+/* desktop: 3 gambar sejajar selebar kartu, biar kolom kiri nggak kosong */
+.wcard:has(> .imgal) {
+  row-gap: 24px
+}
+
+@media(min-width:861px) {
+  .imgal {
+    grid-template-columns: 1fr 1fr 1.333fr
+  }
+
+  .imgal .wide {
+    grid-column: auto
+  }
+
+  .imgal .wide img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    aspect-ratio: auto
+  }
+}
+
 /* kartu Imigrasi: tile utama + chip peran */
 .facts.imi .fact.big {
   grid-column: 1/-1;
