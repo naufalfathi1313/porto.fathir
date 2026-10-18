@@ -360,7 +360,7 @@ h3 {
   min-height: 100svh;
   display: flex;
   align-items: center;
-  padding: 110px 0 60px
+  padding: 76px 0 60px
 }
 
 .hero .wrap {
@@ -373,7 +373,7 @@ h3 {
 
 .hero h1 {
   font-size: clamp(52px, 8.6vw, 118px);
-  margin: 18px 0 22px
+  margin: 0 0 22px
 }
 
 .hero h1 .thin {

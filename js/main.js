@@ -467,7 +467,7 @@
     tlfill = document.getElementById('tlfill'),
     links = [].slice.call(document.querySelectorAll('.nav ul a')),
     here = document.getElementById('here'),
-    secs = [['about', 'About'], ['bnet', 'Thinking Proses'], ['result', 'Result'], ['Experience', 'Experience'], ['organisasi', 'Organisasi'], ['pendidikan', 'Education'], ['skills', 'Skills'], ['closing', ''], ['kontak', 'Contact']].map(function(s) {
+    secs = [['about', 'About'], ['bnet', 'Thinking Proses'], ['result', 'Result'], ['Experience', 'Experience'], ['organisasi', 'Organization'], ['pendidikan', 'Education'], ['skills', 'Skills'], ['closing', ''], ['kontak', 'Contact']].map(function(s) {
       return { el: document.getElementById(s[0]), label: s[1] };
     }),
     curLabel = null,
