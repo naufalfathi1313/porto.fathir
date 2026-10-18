@@ -2354,12 +2354,42 @@ h3 {
   }
 }
 
-/* ---- Organisasi 3 kolom ---- */
+/* ---- Organisasi: 3 kartu per baris, sisa baris terakhir dilebarin biar nggak ada slot kosong ---- */
 .edu.three {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.edu.three > .ecard {
+  grid-column: span 2;
+}
+
+.edu.three > .ecard:nth-last-child(2):nth-child(3n+1),
+.edu.three > .ecard:last-child:nth-child(3n+2) {
+  grid-column: span 3;
+}
+
+.edu.three > .ecard:last-child:nth-child(3n+1) {
+  grid-column: 1 / -1;
 }
 
 @media(max-width:960px) {
+  .edu.three {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .edu.three > .ecard,
+  .edu.three > .ecard:nth-last-child(2):nth-child(3n+1),
+  .edu.three > .ecard:last-child:nth-child(3n+2),
+  .edu.three > .ecard:last-child:nth-child(3n+1) {
+    grid-column: auto;
+  }
+
+  .edu.three > .ecard:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media(max-width:760px) {
   .edu.three {
     grid-template-columns: 1fr;
   }
