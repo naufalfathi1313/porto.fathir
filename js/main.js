@@ -417,7 +417,10 @@
     var card = v.closest('.pcard');
     if (pinMQ.matches && card && !card.classList.contains('on')) return;
     if (!v.src) v.src = v.dataset.src;
-    if (!v.ended) v.play().catch(function() {});
+    if (!v.ended) v.play().catch(function(err) {
+      // autoplay diblok (mis. Low Power Mode di iPhone): cover tetap, kasih tanda buat diketuk
+      if (err.name === 'NotAllowedError') v.parentNode.classList.add('tap');
+    });
   }
   var vio = new IntersectionObserver(function(es) {
     es.forEach(function(e) {
@@ -430,8 +433,18 @@
     threshold: .4
   });
   document.querySelectorAll('.vslot video').forEach(function(v) {
+    var fig = v.parentNode;
     v.addEventListener('loadeddata', function() {
-      v.parentNode.classList.add('ready');
+      fig.classList.add('ready');
+    });
+    // cover tampil selama loading dan setelah video selesai
+    v.addEventListener('playing', function() {
+      fig.classList.add('playing');
+      fig.classList.remove('tap');
+    });
+    v.addEventListener('ended', function() {
+      fig.classList.remove('playing');
+      fig.classList.add('tap');
     });
     // browser blok autoplay bersuara, jadi mulai muted dan suara dinyalain lewat tombol
     var snd = v.parentNode.querySelector('.snd');
@@ -440,12 +453,11 @@
       snd.setAttribute('aria-pressed', String(!v.muted));
       if (!v.muted) v.play().catch(function() {});
     });
-    // sekali main, tanpa loop; tap videonya buat muter ulang
-    v.addEventListener('click', function() {
-      if (v.ended) {
-        v.currentTime = 0;
-        v.play().catch(function() {});
-      }
+    // sekali main, tanpa loop; ketuk cover buat muter ulang
+    fig.querySelector('.cover').addEventListener('click', function() {
+      if (!v.src) v.src = v.dataset.src;
+      if (v.ended) v.currentTime = 0;
+      v.play().catch(function() {});
     });
     vio.observe(v);
   });

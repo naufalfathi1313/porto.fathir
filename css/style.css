@@ -2547,6 +2547,59 @@ h3 {
   }
 }
 
+/* ---- Cover video: tampil pas loading & setelah selesai, ketuk buat putar lagi ---- */
+.vslot .cover {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: opacity .5s var(--ease), visibility 0s;
+}
+
+.vslot .cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vslot.playing .cover {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s var(--ease), visibility 0s .5s;
+}
+
+.vslot .play {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .55);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: scale(.8);
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+
+.vslot.tap .play {
+  opacity: 1;
+  transform: none;
+}
+
+.vslot .cover:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: 16px;
+}
+
 /* ---- Tombol suara di slot video ---- */
 .snd {
   position: absolute;
