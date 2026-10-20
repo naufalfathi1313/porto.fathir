@@ -1148,7 +1148,7 @@ h3 {
 }
 
 /* HP: kalender pakai mockup iPhone kiriman Fathir (kegiatan pribadi sudah di-blur).
-   Tiap kegiatan dipotong dari gambarnya, jadi bisa numpuk berantakan lalu terbang ke slotnya */
+   Tiap kegiatan digambar ulang jadi SVG biar tajam, jadi bisa numpuk berantakan lalu terbang ke slotnya */
 .calphone {
   display: none
 }
@@ -1164,9 +1164,24 @@ h3 {
   position: absolute;
   overflow: hidden;
   border-radius: 3px;
-  background-image: url("../assets/img/kalender-hp.webp");
-  background-repeat: no-repeat;
   will-change: transform
+}
+
+.pev svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  font-size: 10.4px;
+  font-weight: 600;
+  letter-spacing: -.01em
+}
+
+.pevdefs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden
 }
 
 @media(max-width:760px) {
