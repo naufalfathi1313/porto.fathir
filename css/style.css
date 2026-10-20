@@ -1147,6 +1147,30 @@ h3 {
   position: relative;
 }
 
+/* HP: kalender pakai mockup iPhone kiriman Fathir, kegiatan pribadinya sudah di-blur */
+.calphone {
+  display: none
+}
+
+@media(max-width:760px) {
+  .calstage {
+    background: radial-gradient(70% 42% at 50% 52%, rgba(79, 91, 255, .3), transparent 72%)
+  }
+
+  .calstage .calbar,
+  .calstage .cal {
+    display: none
+  }
+
+  .calphone {
+    display: block;
+    width: min(74vw, 300px);
+    height: auto;
+    margin: 22px auto 6px;
+    filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .55))
+  }
+}
+
 .prioCard {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
