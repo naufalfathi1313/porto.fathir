@@ -788,6 +788,8 @@ h3 {
   display: flex;
   align-items: center;
   overflow: hidden;
+  /* kanan-kiri tetap kepotong, bawah dibiarin biar glow kartu nggak patah */
+  overflow: clip visible;
   padding-top: 52px
 }
 
@@ -1726,8 +1728,8 @@ h3 {
   }
 }
 
-/* kartu Imigrasi: tile utama + chip peran */
-.facts.imi .fact.big {
+/* tile utama (Kredensial, Imigrasi) + chip peran */
+.fact.big {
   grid-column: 1/-1;
   display: flex;
   align-items: center;
@@ -1742,7 +1744,7 @@ h3 {
   color: var(--accent)
 }
 
-.facts.imi .fact.big .l {
+.fact.big .l {
   color: rgba(255, 255, 255, .72);
   font-size: 16px;
   margin: 0
@@ -2921,8 +2923,8 @@ h3 {
   box-shadow: 0 30px 60px -40px rgba(0, 0, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .06)
 }
 
-/* Imigrasi: tile 50 video ikut kartu biru pilar Konten */
-.facts.imi .fact.big {
+/* tile utama (Kredensial, Imigrasi) ikut kartu biru pilar Konten */
+.fact.big {
   border: 1px solid transparent;
   background:
     radial-gradient(70% 90% at 0% 0%, rgba(64, 255, 167, .16), transparent 70%) padding-box,
@@ -2933,6 +2935,26 @@ h3 {
 
 .facts.imi .fact.big .v {
   text-shadow: 0 0 28px rgba(64, 255, 167, .35)
+}
+
+/* Kredensial: label kecil di atas, nama lembaga di bawah */
+.fact.pub {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px
+}
+
+.fact.pub .l {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .02em
+}
+
+.fact.pub .v {
+  font-size: clamp(24px, 2.6vw, 32px);
+  letter-spacing: -.025em;
+  line-height: 1.15
 }
 
 /* pilar: Konten = mint (ngejar algoritma), Publikasi = biru (ngejar kepercayaan) */
