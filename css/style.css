@@ -617,6 +617,33 @@ h3 {
   mask-image: radial-gradient(ellipse 56% 40% at 50% 50%, #000 20%, transparent 100%)
 }
 
+/* HP: glow jadi bulatan di belakang teks utama, nggak melebar ke tepi layar & nggak ketutup kartu */
+@media(max-width:760px) {
+  .aurora.dk::before {
+    inset: 0 -18%
+  }
+
+  .quote.aurora::before {
+    -webkit-mask-image: radial-gradient(46vw 30% at 50% 58%, #000 10%, transparent 100%);
+    mask-image: radial-gradient(46vw 30% at 50% 58%, #000 10%, transparent 100%)
+  }
+
+  .quote.aurora::after {
+    -webkit-mask-image: radial-gradient(50vw 34% at 50% 58%, #000 20%, transparent 100%);
+    mask-image: radial-gradient(50vw 34% at 50% 58%, #000 20%, transparent 100%)
+  }
+
+  .contact.aurora::before {
+    -webkit-mask-image: radial-gradient(46vw 15% at 50% 31%, #000 10%, transparent 100%);
+    mask-image: radial-gradient(46vw 15% at 50% 31%, #000 10%, transparent 100%)
+  }
+
+  .contact.aurora::after {
+    -webkit-mask-image: radial-gradient(50vw 17% at 50% 31%, #000 20%, transparent 100%);
+    mask-image: radial-gradient(50vw 17% at 50% 31%, #000 20%, transparent 100%)
+  }
+}
+
 .aurora.dk .eyebrow,
 .quote.aurora p.small {
   color: rgba(245, 246, 255, .82)
@@ -689,6 +716,13 @@ h3 {
 
 .bignum {
   background: radial-gradient(ellipse 55% 45% at 50% 42%, rgba(64, 255, 167, .12), transparent 72%)
+}
+
+/* HP: glow mint ngumpul di belakang angka 1,45M, nggak nyelip di antara kartu */
+@media(max-width:760px) {
+  .bignum {
+    background: radial-gradient(46vw 120px at 50% 190px, rgba(64, 255, 167, .2), transparent)
+  }
 }
 
 .dark .eyebrow {
@@ -1880,7 +1914,7 @@ h3 {
   left: 7px;
   top: 8px;
   width: 2px;
-  background: var(--electric);
+  background: var(--navy);
   height: 0;
   transition: height .2s linear
 }
@@ -1906,9 +1940,52 @@ h3 {
   transition: box-shadow .4s, background .4s
 }
 
-.ti.in::before {
-  background: var(--electric);
-  box-shadow: inset 0 0 0 2px var(--electric), 0 0 0 6px rgba(79, 91, 255, .2)
+/* titik nyala pas garis progress nyampe, plus satu gelombang stroke kayak speaker */
+.ti.hit::before {
+  background: var(--navy);
+  box-shadow: inset 0 0 0 2px var(--navy), 0 0 0 6px rgba(5, 7, 97, .12)
+}
+
+.ti::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--navy);
+  opacity: 0;
+  pointer-events: none
+}
+
+.ti.hl::after {
+  width: 20px;
+  height: 20px;
+  left: -2px;
+  top: 4px
+}
+
+.ti.hit::after {
+  animation: dotWave 1.2s cubic-bezier(.2, .6, .3, 1) 1
+}
+
+@keyframes dotWave {
+  0% {
+    transform: scale(1);
+    opacity: .85
+  }
+
+  100% {
+    transform: scale(2.6);
+    opacity: 0
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .ti::after {
+    display: none
+  }
 }
 
 .ti .when {

@@ -18,7 +18,7 @@
     threshold: .18,
     rootMargin: '0px 0px -6% 0px'
   });
-  document.querySelectorAll('.rv,.ti,[data-count]').forEach(function(el) {
+  document.querySelectorAll('.rv,[data-count]').forEach(function(el) {
     io.observe(el);
   });
 
@@ -477,6 +477,7 @@
     }),
     tl = document.getElementById('tl'),
     tlfill = document.getElementById('tlfill'),
+    tis = [].slice.call(document.querySelectorAll('#tl .ti')),
     links = [].slice.call(document.querySelectorAll('.nav ul a')),
     here = document.getElementById('here'),
     secs = [['about', 'About'], ['bnet', 'Thinking Proses'], ['result', 'Result'], ['Experience', 'Experience'], ['organisasi', 'Organization'], ['pendidikan', 'Education'], ['skills', 'Skills'], ['closing', ''], ['kontak', 'Contact']].map(function(s) {
@@ -522,6 +523,11 @@
     var tr = tl.getBoundingClientRect(),
       tp = Math.min(Math.max((vh * .6 - tr.top) / tr.height, 0), 1);
     tlfill.style.height = (tp * (tr.height - 16)) + 'px';
+    // titik nyala sekali pas ujung garis lewat tengahnya
+    var tipY = tr.top + 8 + tp * (tr.height - 16);
+    tis.forEach(function(t) {
+      if (!t.classList.contains('hit') && t.getBoundingClientRect().top + 14 <= tipY) t.classList.add('hit');
+    });
     // cookie: cokelatnya nambah seiring scroll
     var cr = closing.getBoundingClientRect(),
       cp = reduce ? 1 : Math.min(Math.max((vh * .8 - cr.top) / (vh * .35 + cr.height / 2), 0), 1),
