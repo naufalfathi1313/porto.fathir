@@ -2,7 +2,7 @@
    Portofolio Naufal Fathir Hidayat — style.css
    Font: Uncut Sans (file di assets/fonts)
    Mau ganti warna? Ubah variabel di :root di bawah ini.
-   --accent  = kuning utama
+   --accent  = mint utama (#40FFA7), --dark = navy (#050761)
    --bg      = latar terang, --dark = latar section gelap
    ========================================================= */
 @font-face {
@@ -34,19 +34,20 @@
 }
 
 :root {
-  --bg: #fbfbfd;
-  --bg2: #f2f2f5;
+  --bg: #f7f8fc;
+  --bg2: #eceef8;
   --card: #ffffff;
-  --ink: #1d1d1f;
-  --ink2: #515154;
-  --ink3: #6e6e73;
-  --line: rgba(0, 0, 0, .09);
-  --accent: #E8B931;
-  --accent-ink: #8a6400;
-  --dark: #0b0b0d;
-  --dark2: #161618;
-  --dark-ink: #f5f5f7;
-  --dark-ink2: #a1a1a6;
+  --ink: #050761;
+  --ink2: #44467a;
+  --ink3: #6b6d96;
+  --line: rgba(5, 7, 97, .1);
+  --accent: #40FFA7;
+  --accent-ink: #050761;
+  --dark: #050761;
+  --dark2: #0f1380;
+  --dark3: #1a1f9a;
+  --dark-ink: #f5f6ff;
+  --dark-ink2: #a9acdb;
   --ease: cubic-bezier(.22, 1, .36, 1);
   --spring: cubic-bezier(.34, 1.56, .64, 1);
   --r: 28px;
@@ -136,7 +137,7 @@ h3 {
 }
 
 .mark {
-  background: linear-gradient(transparent 62%, rgba(232, 185, 49, .55) 62%);
+  background: linear-gradient(transparent 62%, rgba(64, 255, 167, .7) 62%);
   padding: 0 .06em
 }
 
@@ -148,7 +149,7 @@ h3 {
   height: 52px;
   display: flex;
   align-items: center;
-  background: rgba(251, 251, 253, .72);
+  background: rgba(247, 248, 252, .72);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid transparent;
@@ -160,7 +161,7 @@ h3 {
 }
 
 .nav.ondark {
-  background: rgba(22, 22, 24, .72);
+  background: rgba(5, 7, 97, .72);
   color: var(--dark-ink);
   border-bottom-color: rgba(255, 255, 255, .08)
 }
@@ -176,7 +177,7 @@ h3 {
 
 .nav.ondark .cta {
   background: var(--accent);
-  color: #1d1d1f
+  color: var(--dark)
 }
 
 .nav .wrap {
@@ -541,6 +542,71 @@ h3 {
   }
 }
 
+/* ---------- gradasi grain (hero, quote, kontak) ---------- */
+.aurora {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden
+}
+
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none
+}
+
+/* lapisan warna: dibikin lebih gede dari section biar pas geser pelan nggak kelihatan tepinya */
+.aurora::before {
+  inset: -18%;
+  background: url("../assets/img/grad-light.webp") center / cover;
+  animation: auroraDrift 28s ease-in-out infinite alternate
+}
+
+.aurora.dk::before {
+  background-image: url("../assets/img/grad-dark.webp")
+}
+
+/* quote diapit section navy: tepi atas-bawahnya dibikin nyatu */
+.quote.aurora::before {
+  -webkit-mask-image: linear-gradient(transparent 16%, #000 40%, #000 60%, transparent 84%);
+  mask-image: linear-gradient(transparent 16%, #000 40%, #000 60%, transparent 84%)
+}
+
+.quote.aurora::after {
+  -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent);
+  mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent)
+}
+
+.aurora.dk .eyebrow,
+.quote.aurora p.small {
+  color: rgba(245, 246, 255, .82)
+}
+
+/* grain */
+.aurora::after {
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: .8;
+  mix-blend-mode: overlay
+}
+
+@keyframes auroraDrift {
+  from {
+    transform: translate3d(-6%, -4%, 0) rotate(-4deg) scale(1.04)
+  }
+
+  to {
+    transform: translate3d(6%, 4%, 0) rotate(4deg) scale(1.14)
+  }
+}
+
+.hero .chip,
+.hero .btn.ghost {
+  background: rgba(255, 255, 255, .55)
+}
+
 /* ---------- BNET dark ---------- */
 .dark {
   background: var(--dark);
@@ -584,7 +650,7 @@ h3 {
   font-weight: 800;
   letter-spacing: -.06em;
   line-height: .9;
-  background: linear-gradient(180deg, #fff 30%, #E8B931 120%);
+  background: linear-gradient(180deg, #fff 30%, #40FFA7 120%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -734,7 +800,7 @@ h3 {
 .pcard.on {
   opacity: 1;
   transform: none;
-  box-shadow: 0 0 0 1px rgba(232, 185, 49, .35)
+  box-shadow: 0 0 0 1px rgba(64, 255, 167, .4)
 }
 
 .pcard .num {
@@ -1726,13 +1792,13 @@ h3 {
   height: 16px;
   border-radius: 50%;
   background: var(--bg2);
-  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .2);
+  box-shadow: inset 0 0 0 2px rgba(5, 7, 97, .2);
   transition: box-shadow .4s, background .4s
 }
 
 .ti.in::before {
   background: var(--accent);
-  box-shadow: inset 0 0 0 2px var(--accent), 0 0 0 6px rgba(232, 185, 49, .2)
+  box-shadow: inset 0 0 0 2px var(--accent), 0 0 0 6px rgba(64, 255, 167, .3)
 }
 
 .ti .when {
@@ -1796,7 +1862,7 @@ h3 {
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(232, 185, 49, .22);
+  background: rgba(64, 255, 167, .45);
   color: var(--accent-ink);
   margin-bottom: 8px
 }
@@ -1844,6 +1910,8 @@ h3 {
   display: inline-block;
   white-space: nowrap;
   color: var(--accent-ink);
+  background: linear-gradient(transparent 62%, rgba(64, 255, 167, .7) 62%);
+  padding: 0 .06em;
   opacity: 0;
   transform: translateY(.35em);
   filter: blur(8px);
@@ -1851,7 +1919,7 @@ h3 {
 }
 
 .rv.in .strike s {
-  color: rgba(29, 29, 31, .38)
+  color: rgba(5, 7, 97, .38)
 }
 
 .rv.in .strike s::after {
@@ -1864,16 +1932,17 @@ h3 {
   filter: none
 }
 
-/* di section gelap: teks dicoret terang & redup, kata gantinya kuning */
+/* di section gelap: teks dicoret terang & redup, kata gantinya mint */
 .dark .strike s {
   color: var(--dark-ink2)
 }
 
 .dark .rv.in .strike s {
-  color: rgba(245, 245, 247, .42)
+  color: rgba(245, 246, 255, .42)
 }
 
 .dark .strike ins {
+  background: none;
   color: var(--accent)
 }
 
@@ -1916,7 +1985,7 @@ h3 {
 }
 
 .hlcard {
-  box-shadow: 0 0 0 1.5px rgba(232, 185, 49, .6), 0 20px 40px -28px rgba(0, 0, 0, .25)
+  box-shadow: 0 0 0 2px var(--accent), 0 20px 40px -28px rgba(0, 0, 0, .25)
 }
 
 .hlcard .badge {
@@ -2055,7 +2124,7 @@ h3 {
 
 @media(hover:hover) {
   .cgrid a:hover {
-    background: #222226;
+    background: var(--dark3);
     transform: translateY(-3px)
   }
 }
