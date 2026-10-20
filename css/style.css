@@ -1832,7 +1832,7 @@ h3 {
 #result > .block:first-child {
   background:
     radial-gradient(42% 340px at 88% 8%, rgba(79, 91, 255, .13), transparent),
-    radial-gradient(36% 300px at 6% 70%, rgba(64, 255, 167, .16), transparent)
+    radial-gradient(36% 300px at 6% calc(100% - 320px), rgba(64, 255, 167, .16), transparent)
 }
 
 #karya {
@@ -1856,7 +1856,7 @@ h3 {
 #skills {
   background:
     radial-gradient(50% 300px at 84% 0%, rgba(79, 91, 255, .14), transparent),
-    radial-gradient(36% 280px at 10% 90%, rgba(64, 255, 167, .14), transparent)
+    radial-gradient(36% 280px at 10% calc(100% - 300px), rgba(64, 255, 167, .14), transparent)
 }
 
 .tl {
@@ -2917,8 +2917,22 @@ h3 {
   border: 1px solid transparent;
   background:
     linear-gradient(160deg, rgba(79, 91, 255, .16), rgba(16, 19, 74, .62) 40%, rgba(8, 10, 38, .86)) padding-box,
-    linear-gradient(150deg, rgba(64, 255, 167, .5), rgba(79, 91, 255, .4) 35%, rgba(255, 255, 255, .06) 70%) border-box;
+    linear-gradient(150deg, rgba(64, 255, 167, .5), rgba(79, 91, 255, .4) 35%, rgba(255, 255, 255, .06) 70%) border-box var(--dark);
   box-shadow: 0 30px 60px -40px rgba(0, 0, 0, .9), inset 0 1px 0 rgba(255, 255, 255, .06)
+}
+
+/* Imigrasi: tile 50 video ikut kartu biru pilar Konten */
+.facts.imi .fact.big {
+  border: 1px solid transparent;
+  background:
+    radial-gradient(70% 90% at 0% 0%, rgba(64, 255, 167, .16), transparent 70%) padding-box,
+    linear-gradient(160deg, rgba(79, 91, 255, .16), rgba(16, 19, 74, .62) 40%, rgba(8, 10, 38, .86)) padding-box,
+    linear-gradient(150deg, rgba(64, 255, 167, .6), rgba(79, 91, 255, .35) 35%, rgba(255, 255, 255, .06) 70%) border-box var(--dark);
+  box-shadow: 0 26px 50px -30px rgba(5, 7, 97, .55), inset 0 1px 0 rgba(255, 255, 255, .06)
+}
+
+.facts.imi .fact.big .v {
+  text-shadow: 0 0 28px rgba(64, 255, 167, .35)
 }
 
 /* pilar: Konten = mint (ngejar algoritma), Publikasi = biru (ngejar kepercayaan) */
@@ -2939,7 +2953,7 @@ h3 {
   background:
     radial-gradient(70% 55% at 0% 0%, rgba(var(--pc-rgb), .16), transparent 70%) padding-box,
     linear-gradient(160deg, rgba(79, 91, 255, .12), rgba(16, 19, 74, .62) 40%, rgba(8, 10, 38, .88)) padding-box,
-    linear-gradient(150deg, rgba(var(--pc-rgb), .6), rgba(79, 91, 255, .35) 35%, rgba(255, 255, 255, .06) 70%) border-box
+    linear-gradient(150deg, rgba(var(--pc-rgb), .6), rgba(79, 91, 255, .35) 35%, rgba(255, 255, 255, .06) 70%) border-box var(--dark)
 }
 
 .pcard.on {
