@@ -3028,29 +3028,27 @@ h3 {
   letter-spacing: .02em
 }
 
-/* logo lembaga di plat putih, biar warna aslinya tetap kebaca di atas biru */
+/* logo versi putih langsung di atas tile biru, sebaris, dipisah garis tipis */
 .fact.pub .logos {
-  align-self: stretch;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 14px 22px;
-  padding: 16px;
-  border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 12px 26px -16px rgba(0, 0, 0, .7)
+  gap: clamp(10px, 3vw, 20px)
 }
 
 /* Kemendikdasmen dibikin lebih tinggi biar tulisannya seimbang sama huruf lpdp yang gede */
 .fact.pub .logos img {
   width: auto;
-  max-width: 100%;
-  height: clamp(28px, 7vw, 38px)
+  height: clamp(19px, 6.4vw, 36px)
 }
 
-.fact.pub .logos img + img {
-  height: clamp(22px, 5.4vw, 30px)
+.fact.pub .logos img:last-child {
+  height: clamp(16px, 5.3vw, 30px)
+}
+
+.fact.pub .logos .sep {
+  align-self: stretch;
+  width: 1px;
+  background: rgba(255, 255, 255, .22)
 }
 
 /* pilar: Konten = mint (ngejar algoritma), Publikasi = biru (ngejar kepercayaan) */
