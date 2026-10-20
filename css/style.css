@@ -2,7 +2,8 @@
    Portofolio Naufal Fathir Hidayat — style.css
    Font: Uncut Sans (file di assets/fonts)
    Mau ganti warna? Ubah variabel di :root di bawah ini.
-   --accent  = mint utama (#40FFA7), --dark = navy (#050761)
+   --accent  = mint utama (#40FFA7), --navy = navy brand (#050761, teks & tombol)
+   --dark    = navy gelap buat latar (#080A26), --electric = biru buat grid & glow
    --bg      = latar terang, --dark = latar section gelap
    ========================================================= */
 @font-face {
@@ -37,15 +38,19 @@
   --bg: #f7f8fc;
   --bg2: #eceef8;
   --card: #ffffff;
-  --ink: #050761;
+  --ink: var(--navy);
   --ink2: #44467a;
   --ink3: #6b6d96;
   --line: rgba(5, 7, 97, .1);
   --accent: #40FFA7;
-  --accent-ink: #050761;
-  --dark: #050761;
-  --dark2: #0f1380;
-  --dark3: #1a1f9a;
+  --accent-ink: var(--navy);
+  --navy: #050761;
+  --dark: #080a26;
+  --dark2: #10134a;
+  --dark3: #191d66;
+  --electric: #4f5bff;
+  --grid-dk: rgba(79, 91, 255, .13);
+  --grid-lt: rgba(5, 7, 97, .055);
   --dark-ink: #f5f6ff;
   --dark-ink2: #a9acdb;
   --ease: cubic-bezier(.22, 1, .36, 1);
@@ -161,7 +166,7 @@ h3 {
 }
 
 .nav.ondark {
-  background: rgba(5, 7, 97, .72);
+  background: rgba(8, 10, 38, .72);
   color: var(--dark-ink);
   border-bottom-color: rgba(255, 255, 255, .08)
 }
@@ -564,19 +569,41 @@ h3 {
   animation: auroraDrift 28s ease-in-out infinite alternate
 }
 
+/* hero: latar terang bergrid, gradasinya cuma jadi glow di belakang foto & pojok kiri bawah */
+.hero {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid-lt) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-lt) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: center top
+}
+
+.hero.aurora::before {
+  -webkit-mask-image: radial-gradient(ellipse 34% 40% at 70% 52%, #000 25%, transparent 100%), radial-gradient(ellipse 30% 26% at 22% 82%, rgba(0, 0, 0, .8) 10%, transparent 100%);
+  mask-image: radial-gradient(ellipse 34% 40% at 70% 52%, #000 25%, transparent 100%), radial-gradient(ellipse 30% 26% at 22% 82%, rgba(0, 0, 0, .8) 10%, transparent 100%)
+}
+
+/* HP: fotonya di bawah, jadi glow-nya di pojok kanan atas & di belakang foto */
+@media(max-width:760px) {
+  .hero.aurora::before {
+    -webkit-mask-image: radial-gradient(ellipse 46% 20% at 84% 26%, #000 10%, transparent 100%), radial-gradient(ellipse 52% 24% at 36% 80%, rgba(0, 0, 0, .85) 10%, transparent 100%);
+    mask-image: radial-gradient(ellipse 46% 20% at 84% 26%, #000 10%, transparent 100%), radial-gradient(ellipse 52% 24% at 36% 80%, rgba(0, 0, 0, .85) 10%, transparent 100%)
+  }
+}
+
 .aurora.dk::before {
-  background-image: url("../assets/img/grad-dark.webp")
+  background-image: url("../assets/img/grad-dark.webp");
+  opacity: .75;
+  -webkit-mask-image: radial-gradient(ellipse 42% 36% at 50% 50%, #000 15%, transparent 100%);
+  mask-image: radial-gradient(ellipse 42% 36% at 50% 50%, #000 15%, transparent 100%)
 }
 
-/* quote diapit section navy: tepi atas-bawahnya dibikin nyatu */
-.quote.aurora::before {
-  -webkit-mask-image: linear-gradient(transparent 16%, #000 40%, #000 60%, transparent 84%);
-  mask-image: linear-gradient(transparent 16%, #000 40%, #000 60%, transparent 84%)
-}
-
-.quote.aurora::after {
-  -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent);
-  mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent)
+/* grain-nya ngikut glow, biar nggak ada kotak tekstur */
+.aurora.dk::after {
+  opacity: .5;
+  -webkit-mask-image: radial-gradient(ellipse 60% 52% at 50% 50%, #000 20%, transparent 100%);
+  mask-image: radial-gradient(ellipse 60% 52% at 50% 50%, #000 20%, transparent 100%)
 }
 
 .aurora.dk .eyebrow,
@@ -604,13 +631,30 @@ h3 {
 
 .hero .chip,
 .hero .btn.ghost {
-  background: rgba(255, 255, 255, .55)
+  background: rgba(255, 255, 255, .7);
+  box-shadow: 0 0 0 1px var(--line)
 }
 
 /* ---------- BNET dark ---------- */
+/* latar gelap: navy pekat + grid biru + grain halus, biar nggak biru polos yang bikin silau */
 .dark {
-  background: var(--dark);
+  background-color: var(--dark);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .34 0 0 0 -.13'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(var(--grid-dk) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-dk) 1px, transparent 1px);
+  background-size: 160px 160px, 56px 56px, 56px 56px;
+  background-position: 0 0, center top, center top;
   color: var(--dark-ink)
+}
+
+/* glow biru & mint di beberapa titik biar tetap hidup */
+.bnet-intro {
+  background: radial-gradient(ellipse 70% 70% at 50% 0%, rgba(79, 91, 255, .32), transparent 70%)
+}
+
+.bignum {
+  background: radial-gradient(ellipse 55% 45% at 50% 42%, rgba(64, 255, 167, .12), transparent 72%)
 }
 
 .dark .eyebrow {
