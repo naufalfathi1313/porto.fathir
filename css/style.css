@@ -1147,9 +1147,26 @@ h3 {
   position: relative;
 }
 
-/* HP: kalender pakai mockup iPhone kiriman Fathir, kegiatan pribadinya sudah di-blur */
+/* HP: kalender pakai mockup iPhone kiriman Fathir (kegiatan pribadi sudah di-blur).
+   Tiap kegiatan dipotong dari gambarnya, jadi bisa numpuk berantakan lalu terbang ke slotnya */
 .calphone {
   display: none
+}
+
+.calphone img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .55))
+}
+
+.pev {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 3px;
+  background-image: url("../assets/img/kalender-hp.webp");
+  background-repeat: no-repeat;
+  will-change: transform
 }
 
 @media(max-width:760px) {
@@ -1163,11 +1180,10 @@ h3 {
   }
 
   .calphone {
+    position: relative;
     display: block;
     width: min(74vw, 300px);
-    height: auto;
-    margin: 22px auto 6px;
-    filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .55))
+    margin: 22px auto 6px
   }
 }
 
@@ -1233,7 +1249,8 @@ h3 {
 }
 
 .shine::after,
-.ev.c-red::after {
+.ev.c-red::after,
+.pev.red::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1253,6 +1270,7 @@ h3 {
 .cell:nth-child(7n+6) .ev::after { animation-delay: .75s; }
 .cell:nth-child(7n) .ev::after { animation-delay: .9s; }
 .ev.c-red + .ev.c-red::after { animation-delay: .2s; }
+.pev.red::after { animation-delay: var(--sd, 0s); }
 
 @keyframes shine {
   0%, 55% {

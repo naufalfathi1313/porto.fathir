@@ -83,7 +83,7 @@
 
   // kalender: semua kegiatan awalnya numpuk berantakan, rapi ke slot harinya pas discroll
   var calStage = document.getElementById('calStage'),
-    calEvs = [].slice.call(calStage.querySelectorAll('.ev')),
+    calEvs = [].slice.call(calStage.querySelectorAll('.ev, .pev')),
     calMeta = [],
     calCur = reduce ? 1 : 0,
     calTgt = calCur,
@@ -114,8 +114,10 @@
         y += n.offsetTop;
         n = n.offsetParent;
       }
-      var sx = small ? 2.4 : 1,
-        sy = small ? 1.4 : 1,
+      // potongan kegiatan di mockup iPhone dibesarin rata biar teksnya kebaca pas berantakan
+      var pev = e.classList.contains('pev'),
+        sx = pev ? 1.8 : small ? 2.4 : 1,
+        sy = pev ? 1.8 : small ? 1.4 : 1,
         cx = w * sx / 2 + calRand(i, 1) * (sw - w * sx),
         cy = h * sy / 2 + calRand(i, 2) * (sh - h * sy);
       return {
@@ -124,7 +126,7 @@
         a: (calRand(i, 3) - .5) * 70,
         sx: sx,
         sy: sy,
-        d: (+e.parentNode.dataset.i + calRand(i, 4)) / 42 * .5
+        d: (+(e.dataset.i || e.parentNode.dataset.i) + calRand(i, 4)) / 42 * .5
       };
     });
   }
