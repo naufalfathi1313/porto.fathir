@@ -17,7 +17,7 @@ Buka `index.html` di browser buat lihat hasilnya. Semua file harus tetap di fold
 ## Yang paling sering diedit
 
 - **Ganti teks:** buka `index.html`, cari kalimatnya (Ctrl/Cmd + F), terus ganti.
-- **Ganti warna:** di `css/style.css` bagian `:root`, `--accent` = mint (#40FFA7) dan `--dark` = navy (#050761). Gradasi grain ada di `assets/img/grad-light.webp` dan `grad-dark.webp`.
+- **Ganti warna:** di `css/style.css` bagian `:root`: `--accent` = mint (#40FFA7), `--navy` = navy brand buat teks & tombol (#050761), `--dark` = latar gelap (#080A26), `--electric` = biru buat grid & glow (#4F5BFF). Gradasi grain ada di `assets/img/grad-light.webp` dan `grad-dark.webp`.
 - **Ganti foto:** timpa `assets/img/foto-fathir.jpg` pakai foto baru dengan nama yang sama.
 - **Tambah entri timeline:** di `index.html`, copy satu baris `<div class="ti">…</div>` di section Proses. Kalau mau di-highlight, pakai `class="ti hl"` dan tambahin `<span class="badge">Featured</span>`.
 - **Video 10 detik:** taruh `konten.mp4` dan `publikasi.mp4` (portrait 9:16) di `assets/video/`. Otomatis muncul dan main sekali pas kelihatan (tap buat muter ulang) (awalnya muted, pengunjung bisa nyalain suara lewat tombol speaker); sebelum ada file-nya, yang tampil kotak placeholder.
