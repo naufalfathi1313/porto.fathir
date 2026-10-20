@@ -3028,27 +3028,54 @@ h3 {
   letter-spacing: .02em
 }
 
-/* logo versi putih langsung di atas tile biru, sebaris, dipisah garis tipis */
-.fact.pub .logos {
+/* logo jadi icon aplikasi ala home screen iPhone: squircle putih, nama di bawah */
+.fact.pub .apps {
   display: flex;
+  gap: clamp(18px, 5vw, 30px);
+  margin-top: 6px
+}
+
+.fact.pub .app {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: clamp(10px, 3vw, 20px)
+  gap: 8px
 }
 
-/* Kemendikdasmen dibikin lebih tinggi biar tulisannya seimbang sama huruf lpdp yang gede */
-.fact.pub .logos img {
-  width: auto;
-  height: clamp(19px, 6.4vw, 36px)
+.fact.pub .appic {
+  width: clamp(56px, 16vw, 68px);
+  aspect-ratio: 1;
+  border-radius: 23%;
+  background: linear-gradient(180deg, #fff, #e8ecf7);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 14px 26px -12px rgba(0, 0, 0, .7), inset 0 -1px 0 rgba(5, 7, 97, .08);
+  transition: transform .4s cubic-bezier(.2, .8, .2, 1)
 }
 
-.fact.pub .logos img:last-child {
-  height: clamp(16px, 5.3vw, 30px)
+@media(hover:hover) {
+  .fact.pub .app:hover .appic {
+    transform: translateY(-3px) scale(1.06)
+  }
 }
 
-.fact.pub .logos .sep {
-  align-self: stretch;
-  width: 1px;
-  background: rgba(255, 255, 255, .22)
+.fact.pub .appic img {
+  width: 76%;
+  height: 76%;
+  object-fit: contain
+}
+
+/* api LPDP ramping, dikecilin dikit biar bobotnya sama kayak lingkaran Tut Wuri */
+.fact.pub .app:last-child .appic img {
+  width: 64%;
+  height: 64%
+}
+
+.fact.pub .nm {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, .9);
+  letter-spacing: -.01em
 }
 
 /* pilar: Konten = mint (ngejar algoritma), Publikasi = biru (ngejar kepercayaan) */
