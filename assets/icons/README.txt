@@ -6,3 +6,6 @@ Selama file belum ada, tile otomatis tampil monogram.
 
 Icon kartu kontak (Hit me up): mail.svg, whatsapp.svg, linkedin.svg, instagram.svg.
 Glyph WhatsApp/LinkedIn/Instagram dari Simple Icons (CC0), tile warnanya digambar ulang ala app icon.
+
+Favicon: favicon.svg (monogram NF + titik mint, huruf Uncut Sans Bold sudah jadi path). Cadangannya favicon.ico dan apple-touch-icon.png di root.
+Kalau ganti favicon, naikin ?v= di index.html biar cache browser ikut ganti.
