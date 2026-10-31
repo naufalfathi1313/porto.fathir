@@ -50,7 +50,6 @@
   --display: "Anton", "Impact", "Arial Narrow", sans-serif;
   --hand: "Caveat", "Comic Sans MS", cursive;
   --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --bluegrad: linear-gradient(160deg, var(--blue2) 0%, var(--blue) 70%);
 }
 
 html {
@@ -138,8 +137,6 @@ h4 {
 .mcard .eyebrow,
 .ecard .eyebrow,
 .ti .when,
-.pcard .num,
-.pcard dt,
 .step .k,
 .think3 b,
 .cgrid .l,
@@ -513,7 +510,7 @@ h4 {
   bottom: -6%;
   width: 72%;
   height: 64%;
-  background: var(--bluegrad);
+  background: var(--blue);
   border-radius: 28px;
   clip-path: polygon(0 18%, 100% 0, 100% 100%, 12% 100%)
 }
@@ -700,81 +697,301 @@ h4 {
   color: rgba(255, 255, 255, .72)
 }
 
+/* Dua pilar = dua benda yang beda, biar bedanya kerasa tanpa dijelasin:
+   Konten = halaman buku tulis (draf yang dikurasi),
+   Publikasi = struk harian (rutin, tercatat, wajib lengkap tiap hari). */
 .pcard {
-  border-radius: 36px;
-  border: 1px solid transparent
-}
-
-#p1 {
-  background: var(--bluegrad);
-  border-color: rgba(255, 255, 255, .14);
-  --pc: #fff;
-  --pc-rgb: 255, 255, 255
-}
-
-#p2 {
-  background: var(--indigo2);
-  border-color: rgba(156, 154, 255, .22);
-  --pc: var(--accent);
-  --pc-rgb: 64, 255, 167
-}
-
-.pcard.on {
-  box-shadow: 0 40px 90px -45px rgba(0, 0, 0, .8)
-}
-
-.pcard .num {
-  color: var(--accent)
-}
-
-#p1 .num {
-  color: #fff
-}
-
-.pcard .num::before {
-  box-shadow: none
-}
-
-.pcard h3 {
-  -webkit-background-clip: border-box;
-  background: none;
-  background-clip: border-box;
-  color: #fff;
-  font-size: clamp(48px, 5vw, 72px);
-  margin: 10px 0 4px
-}
-
-.pcard .sub {
-  color: rgba(255, 255, 255, .78)
-}
-
-.pcard dt {
-  color: var(--lav2) !important;
-  font-size: 11px !important
-}
-
-#p2 dt {
-  color: var(--lav) !important
-}
-
-.pcard dd {
-  border-bottom-color: rgba(255, 255, 255, .12)
-}
-
-.pcard .ex {
-  color: rgba(255, 255, 255, .72)
-}
-
-.pcard .tags span {
-  background: transparent;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4);
-  color: #fff
+  --rule: 30px;
+  border: 0;
+  border-radius: 6px;
+  color: var(--ink);
+  overflow: visible
 }
 
 .pcard::after {
-  font-family: var(--display);
-  font-weight: 400;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, .16)
+  content: none
+}
+
+.pcard.on {
+  box-shadow: none
+}
+
+.pcard .num::before {
+  content: none
+}
+
+/* --- buku tulis --- */
+#p1 {
+  rotate: -1.2deg;
+  padding: calc(var(--rule) * 2) 32px var(--rule) 56px;
+  background:
+    radial-gradient(circle at 16px 20px, var(--indigo) 5px, transparent 5.5px) 0 0 / 34px 40px repeat-x,
+    linear-gradient(90deg, transparent 38px, rgba(229, 72, 77, .55) 38px 39.5px, transparent 39.5px),
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--rule) - 1px), #cddcf3 calc(var(--rule) - 1px) var(--rule)) 0 7px,
+    #fffefa
+}
+
+#p1 .num {
+  font-family: var(--hand);
+  font-size: 24px;
+  line-height: var(--rule);
+  text-transform: lowercase;
+  letter-spacing: 0;
+  color: #d83b40
+}
+
+#p1 h3 {
+  color: var(--blue);
+  font-size: 64px;
+  line-height: calc(var(--rule) * 2);
+  margin: 0
+}
+
+#p1 .sub,
+#p1 dd,
+#p1 .ex {
+  font-size: 16px;
+  line-height: var(--rule);
+  color: var(--ink2)
+}
+
+#p1 .sub {
+  margin: 0 0 var(--rule)
+}
+
+#p1 dl {
+  grid-template-columns: auto 1fr;
+  gap: 0 16px;
+  font-size: 16px
+}
+
+#p1 dt {
+  font-family: var(--hand);
+  font-size: 23px;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: var(--rule);
+  color: #d83b40
+}
+
+#p1 dd {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--ink);
+  font-weight: 500
+}
+
+/* tag = hashtag tulisan tangan */
+#p1 .tags {
+  gap: 0 14px;
+  margin-top: var(--rule)
+}
+
+#p1 .tags span {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-family: var(--hand);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: var(--rule);
+  color: var(--blue)
+}
+
+#p1 .tags span::before {
+  content: "#"
+}
+
+#p1 .ex {
+  margin-top: var(--rule)
+}
+
+#p1 .ex b {
+  color: var(--ink);
+  background: linear-gradient(transparent 55%, rgba(64, 255, 167, .8) 55%)
+}
+
+/* --- struk --- */
+#p2 {
+  rotate: 1deg;
+  padding: 44px 30px 46px;
+  border-radius: 0;
+  background: #fbfaf5;
+  font-family: var(--mono);
+  --z: 9px;
+  -webkit-mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--z) * 2) 51% repeat-x, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--z) * 2) 51% repeat-x;
+  mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--z) * 2) 51% repeat-x, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--z) * 2) 51% repeat-x
+}
+
+#p2 .num {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .2em;
+  color: var(--ink3)
+}
+
+#p2 h3 {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: clamp(40px, 4vw, 54px);
+  letter-spacing: -.04em;
+  line-height: 1;
+  color: var(--ink);
+  margin: 10px 0 6px
+}
+
+#p2 .sub {
+  font-size: 14px;
+  color: var(--ink2);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1.5px dashed rgba(20, 16, 92, .3)
+}
+
+#p2 dl {
+  grid-template-columns: auto 1fr;
+  gap: 0 18px;
+  font-size: 13px
+}
+
+#p2 dt {
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  padding-top: 2px
+}
+
+#p2 dd {
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+  text-align: right;
+  color: var(--ink);
+  font-weight: 400
+}
+
+/* tag = baris item struk dengan titik-titik dan centang */
+#p2 .tags {
+  display: grid;
+  gap: 6px;
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1.5px dashed rgba(20, 16, 92, .3)
+}
+
+#p2 .tags span {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink)
+}
+
+#p2 .tags span::before {
+  content: "";
+  order: 1;
+  flex: 1;
+  border-bottom: 1.5px dotted rgba(20, 16, 92, .35)
+}
+
+#p2 .tags span::after {
+  content: "\2713";
+  order: 2;
+  color: var(--blue)
+}
+
+#p2 .ex {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink2);
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1.5px dashed rgba(20, 16, 92, .3)
+}
+
+/* video = foto yang ditempel selotip */
+.pcard .vslot {
+  overflow: visible;
+  background: #000;
+  border-radius: 14px;
+  box-shadow: 0 22px 34px -18px rgba(10, 8, 60, .55)
+}
+
+.pcard .vslot video,
+.pcard .vslot .cover,
+.pcard .vslot .cover img {
+  border-radius: 14px
+}
+
+.pcard .vslot::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: -13px;
+  left: 50%;
+  width: 92px;
+  height: 26px;
+  margin-left: -46px;
+  background: rgba(64, 255, 167, .85);
+  clip-path: polygon(0 12%, 5% 0, 95% 10%, 100% 0, 100% 88%, 95% 100%, 5% 90%, 0 100%);
+  pointer-events: none
+}
+
+#p1 .vslot {
+  rotate: 2.5deg
+}
+
+#p1 .vslot::before {
+  rotate: -5deg
+}
+
+#p2 .vslot {
+  rotate: -2deg
+}
+
+#p2 .vslot::before {
+  left: auto;
+  right: -24px;
+  top: -6px;
+  rotate: 38deg;
+  background: rgba(255, 255, 255, .7);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12)
+}
+
+@media(max-width:860px) {
+  #p1 {
+    padding: calc(var(--rule) * 2) 22px var(--rule) 50px;
+    background:
+      radial-gradient(circle at 16px 20px, var(--indigo) 5px, transparent 5.5px) 0 0 / 34px 40px repeat-x,
+      linear-gradient(90deg, transparent 34px, rgba(229, 72, 77, .55) 34px 35.5px, transparent 35.5px),
+      repeating-linear-gradient(to bottom, transparent 0 calc(var(--rule) - 1px), #cddcf3 calc(var(--rule) - 1px) var(--rule)) 0 7px,
+      #fffefa
+  }
+
+  #p1 h3 {
+    font-size: 58px
+  }
+
+  #p2 {
+    padding: 40px 22px 42px
+  }
+
+  .pcard .pbody {
+    gap: var(--rule)
+  }
+
+  .pgrid {
+    gap: 30px
+  }
 }
 
 /* ---------- quote (putih) ---------- */
@@ -831,7 +1048,7 @@ h4 {
 }
 
 .prioCard {
-  background: var(--bluegrad) !important;
+  background: var(--blue) !important;
   border-color: rgba(255, 255, 255, .14) !important;
   box-shadow: 0 30px 60px -40px rgba(0, 0, 0, .8) !important
 }
@@ -1021,7 +1238,7 @@ h4 {
 }
 
 .fact.big {
-  background: var(--bluegrad) !important;
+  background: var(--blue) !important;
   border: 0 !important;
   box-shadow: none !important
 }
@@ -1125,11 +1342,11 @@ h4 {
 }
 
 .ti.hl .tbody {
-  background: var(--bluegrad);
+  background: var(--blue);
   color: #fff;
   border-radius: 28px;
   padding: 24px 28px;
-  box-shadow: 0 30px 60px -36px rgba(11, 11, 240, .7)
+  box-shadow: none
 }
 
 .ti.hl .tbody p,
@@ -1165,7 +1382,7 @@ h4 {
 }
 
 #organisasi .ecard:first-child {
-  background: var(--bluegrad);
+  background: var(--blue);
   box-shadow: none
 }
 
