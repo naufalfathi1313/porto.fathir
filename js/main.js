@@ -482,7 +482,7 @@
     tis = [].slice.call(document.querySelectorAll('#tl .ti')),
     links = [].slice.call(document.querySelectorAll('.nav ul a')),
     here = document.getElementById('here'),
-    secs = [['about', 'About'], ['bnet', 'Thinking Proses'], ['result', 'Result'], ['Experience', 'Experience'], ['organisasi', 'Organization'], ['pendidikan', 'Education'], ['skills', 'Skills'], ['closing', ''], ['kontak', 'Contact']].map(function(s) {
+    secs = [['about', 'About'], ['bnet', 'Thinking Proses'], ['result', 'Result'], ['Experience', 'Experience'], ['organisasi', 'Organization'], ['pendidikan', 'Education'], ['skills', 'Skills'], ['decision', 'Decision Support'], ['closing', ''], ['kontak', 'Contact']].map(function(s) {
       return { el: document.getElementById(s[0]), label: s[1] };
     }),
     curLabel = null,
@@ -590,6 +590,48 @@
   portrait.addEventListener('click', function() {
     if (!hoverMQ.matches) nextPic();
   });
+  // kursor: titik mint ngikutin mouse, membesar di atas link, dan nampilin catatan
+  // tulisan tangan di elemen ber-data-cursor. Cuma di laptop/PC (mouse), gak di HP.
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
+    var cur = document.createElement('div'),
+      curTxt = document.createElement('span'),
+      cx = 0, cy = 0, tx = 0, ty = 0, curRun = false;
+    cur.className = 'cur';
+    cur.setAttribute('aria-hidden', 'true');
+    cur.appendChild(curTxt);
+    document.body.appendChild(cur);
+
+    var curLoop = function() {
+      cx += (tx - cx) * .22;
+      cy += (ty - cy) * .22;
+      cur.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+      if (Math.abs(tx - cx) + Math.abs(ty - cy) > .2) requestAnimationFrame(curLoop);
+      else curRun = false;
+    };
+    document.addEventListener('pointermove', function(e) {
+      if (e.pointerType !== 'mouse') return;
+      tx = e.clientX;
+      ty = e.clientY;
+      if (!cur.classList.contains('show')) {
+        cx = tx;
+        cy = ty;
+        cur.classList.add('show');
+      }
+      if (!curRun) {
+        curRun = true;
+        requestAnimationFrame(curLoop);
+      }
+    });
+    document.addEventListener('pointerover', function(e) {
+      var lbl = e.target.closest('[data-cursor]');
+      if (lbl) curTxt.textContent = lbl.dataset.cursor;
+      cur.classList.toggle('lbl', !!lbl);
+      cur.classList.toggle('link', !lbl && !!e.target.closest('a, button, .vslot'));
+    });
+    document.documentElement.addEventListener('pointerleave', function() {
+      cur.classList.remove('show');
+    });
+  }
   var pillVids = [].slice.call(document.querySelectorAll('.pcard video'));
   // pilar yang dipin: kalau isinya lebih tinggi dari layar, kecilin dikit biar nggak kepotong
   var pilStick = pil.querySelector('.stick'),

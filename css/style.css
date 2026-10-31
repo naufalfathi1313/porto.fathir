@@ -3212,3 +3212,68 @@ h3 {
   color: transparent;
   -webkit-text-stroke: 1px rgba(143, 151, 255, .55)
 }
+
+/* ---------- kursor (cuma mouse; elemennya dibikin main.js) ---------- */
+.cur {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 300;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s
+}
+
+.cur.show {
+  opacity: 1
+}
+
+/* titik mint, membesar jadi lingkaran di atas link */
+.cur::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 1.5px var(--ink);
+  transition: left .35s var(--spring), top .35s var(--spring), width .35s var(--spring), height .35s var(--spring), background .25s, opacity .25s
+}
+
+.cur.link::before {
+  left: -22px;
+  top: -22px;
+  width: 44px;
+  height: 44px;
+  background: rgba(64, 255, 167, .3)
+}
+
+.cur.lbl::before {
+  opacity: 0
+}
+
+/* catatan tulisan tangan di atas selotip putih (mint bakal tenggelam di tombol WA) */
+.cur span {
+  position: absolute;
+  left: 14px;
+  top: 16px;
+  padding: 2px 10px 4px;
+  border-radius: 3px;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--hand, inherit);
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.1;
+  white-space: nowrap;
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .45);
+  transform: rotate(-4deg) scale(0);
+  transform-origin: 0 0;
+  transition: transform .4s var(--spring)
+}
+
+.cur.lbl span {
+  transform: rotate(-4deg) scale(1)
+}
