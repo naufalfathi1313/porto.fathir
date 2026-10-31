@@ -467,8 +467,8 @@
   // scroll-driven
   var nav = document.getElementById('nav'),
     prog = document.getElementById('progress'),
-    img = document.getElementById('portraitImg'),
     portrait = document.getElementById('portrait'),
+    pics = [].slice.call(portrait.querySelectorAll('img')),
     pil = document.querySelector('.pillars'),
     neq = document.getElementById('neq'),
     p1 = document.getElementById('p1'),
@@ -505,7 +505,10 @@
     if (!reduce) {
       var r = portrait.getBoundingClientRect(),
         k = Math.min(Math.max(1 - r.bottom / (vh + r.height), 0), 1);
-      img.style.transform = 'scale(' + (1.12 - k * .12) + ') translateY(' + (k * 24) + 'px)';
+      var pt = 'scale(' + (1.12 - k * .12) + ') translateY(' + (k * 24) + 'px)';
+      pics.forEach(function(p) {
+        p.style.transform = pt;
+      });
     }
     // pillars
     var pr = pil.getBoundingClientRect(),
@@ -572,6 +575,21 @@
     }
     here.classList.toggle('show', !!label);
   }
+  // foto hero gantian: tiap kursor masuk ke foto ganti ke foto berikutnya, di HP tiap di-tap
+  var picN = 0,
+    hoverMQ = window.matchMedia('(hover: hover)');
+
+  function nextPic() {
+    pics[picN].classList.remove('on');
+    picN = (picN + 1) % pics.length;
+    pics[picN].classList.add('on');
+  }
+  portrait.addEventListener('pointerenter', function(e) {
+    if (e.pointerType === 'mouse') nextPic();
+  });
+  portrait.addEventListener('click', function() {
+    if (!hoverMQ.matches) nextPic();
+  });
   var pillVids = [].slice.call(document.querySelectorAll('.pcard video'));
   // pilar yang dipin: kalau isinya lebih tinggi dari layar, kecilin dikit biar nggak kepotong
   var pilStick = pil.querySelector('.stick'),

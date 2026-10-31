@@ -475,6 +475,17 @@ h3 {
   will-change: transform
 }
 
+/* 2 foto numpuk: gantian tiap kursor masuk ke foto (di HP: tiap di-tap) */
+.portrait img {
+  position: absolute;
+  inset: 0;
+  transition: opacity .5s var(--ease)
+}
+
+.portrait img:not(.on) {
+  opacity: 0
+}
+
 .portrait .tag {
   position: absolute;
   left: 16px;
