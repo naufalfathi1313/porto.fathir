@@ -133,14 +133,6 @@ h4 {
   color: inherit !important
 }
 
-.head > .eyebrow.rv.in,
-.bnet-intro .eyebrow.rv.in,
-.ritme .top .eyebrow.rv.in,
-.bignum .eyebrow.rv.in,
-.closing .eyebrow.rv.in {
-  transform: rotate(-3deg)
-}
-
 /* label kecil di kartu = mono huruf kapital renggang */
 .wcard .eyebrow,
 .mcard .eyebrow,
@@ -447,8 +439,7 @@ h4 {
 }
 
 /* ---------- hero (indigo) ---------- */
-.hero,
-.hero.aurora {
+.hero {
   background: var(--indigo);
   color: #fff;
   padding: 104px 0 72px
@@ -616,10 +607,6 @@ h4 {
   .pwin {
     max-width: 440px;
     margin-top: 12px
-  }
-
-  .pwin .portrait {
-    max-width: none
   }
 }
 
@@ -791,8 +778,7 @@ h4 {
 }
 
 /* ---------- quote (putih) ---------- */
-.quote,
-.quote.aurora {
+.quote {
   background: #fff;
   color: var(--ink)
 }
@@ -817,8 +803,7 @@ h4 {
   transform: rotate(-2deg)
 }
 
-.quote blockquote em + em,
-.quote blockquote em:last-of-type {
+.quote blockquote em + em {
   transform: rotate(1.5deg)
 }
 
@@ -978,8 +963,7 @@ h4 {
 }
 
 /* karya (biru, kartu putih) */
-#karya,
-#karya.block {
+#karya {
   background: var(--blue);
   color: #fff;
   padding-top: clamp(90px, 12vw, 150px) !important
@@ -1164,8 +1148,7 @@ h4 {
 }
 
 /* ---------- organization (indigo) ---------- */
-#organisasi,
-#organisasi.block {
+#organisasi {
   background: var(--indigo);
   color: #fff;
   padding-top: clamp(90px, 12vw, 150px) !important
@@ -1207,8 +1190,7 @@ h4 {
 }
 
 /* ---------- education (putih) ---------- */
-#pendidikan,
-#pendidikan.block {
+#pendidikan {
   padding-top: clamp(90px, 12vw, 150px) !important
 }
 
@@ -1227,8 +1209,7 @@ h4 {
 }
 
 /* ---------- skills (biru, pil miring) ---------- */
-#skills,
-#skills.block {
+#skills {
   background: var(--blue);
   color: #fff;
   padding-bottom: clamp(90px, 12vw, 150px)
@@ -1311,8 +1292,7 @@ h4 {
 }
 
 /* ---------- contact (biru, "HIT ME UP" raksasa) ---------- */
-.contact,
-.contact.dark {
+.contact {
   background: var(--blue);
   color: #fff;
   padding-top: clamp(90px, 12vw, 150px)
@@ -1364,10 +1344,6 @@ h4 {
   .talkgo:hover {
     transform: rotate(45deg) scale(1.06)
   }
-}
-
-.talkgo.rv.in:hover {
-  transform: rotate(45deg) scale(1.06)
 }
 
 .contact h2 {
