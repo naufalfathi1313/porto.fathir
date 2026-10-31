@@ -590,46 +590,157 @@
   portrait.addEventListener('click', function() {
     if (!hoverMQ.matches) nextPic();
   });
-  // kursor: titik mint ngikutin mouse, membesar di atas link, dan nampilin catatan
-  // tulisan tangan di elemen ber-data-cursor. Cuma di laptop/PC (mouse), gak di HP.
+  // kursor ala iPad (cuma mouse/trackpad, gak di HP): bulatan abu transparan.
+  // Deket tombol/ikon dia nempel kayak magnet: ikonnya ketarik ke kursor, membesar,
+  // dapet stroke & bayangan, kursornya nyatu (ilang). Link lain dapet sorotan di
+  // belakangnya, dan di atas teks kursornya jadi garis ketik.
   if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
-    var cur = document.createElement('div'),
-      curTxt = document.createElement('span'),
-      cx = 0, cy = 0, tx = 0, ty = 0, curRun = false;
+    var LIFT = '.tool .ico, .talkgo, .cgrid a, .nav .cta, .btn, .calfull, .snd, .scard .tags span, #prio li',
+      TEXT = 'p, h1, h2, h3, h4, li, blockquote, dt, dd, figcaption',
+      cur = document.createElement('div'),
+      px = -99, py = -99, cx = -99, cy = -99, cSize = '',
+      lock = null, mode = '', down = false, fx = [], curRun = false;
     cur.className = 'cur';
     cur.setAttribute('aria-hidden', 'true');
-    cur.appendChild(curTxt);
     document.body.appendChild(cur);
+    document.documentElement.classList.add('pc');
 
-    var curLoop = function() {
-      cx += (tx - cx) * .22;
-      cy += (ty - cy) * .22;
+    var clamp1 = function(v) {
+      return Math.max(-1, Math.min(1, v));
+    };
+    // tiap elemen yang lagi/abis ditempel: geser (x,y), besar (s), bayangan (l)
+    var fxOf = function(el) {
+      for (var i = 0; i < fx.length; i++)
+        if (fx[i].el === el) return fx[i];
+      var f = { el: el, x: 0, y: 0, s: 1, l: 0, tx: 0, ty: 0, ts: 1, tl: 0 };
+      fx.push(f);
+      return f;
+    };
+    var frame = function() {
+      var el = document.elementFromPoint(px, py), next = null, nmode = '';
+      // magnet: yang lagi ditempel baru lepas kalau kursor keluar 16px dari pinggirnya
+      if (lock) {
+        var b = lock.getBoundingClientRect();
+        if (px > b.left - 16 && px < b.right + 16 && py > b.top - 16 && py < b.bottom + 16) {
+          next = lock;
+          nmode = mode;
+        }
+      }
+      if (!next && el && cur.classList.contains('show')) {
+        next = el.closest(LIFT);
+        nmode = 'lift';
+        if (!next) {
+          next = el.closest('a, button');
+          nmode = 'hl';
+        }
+      }
+      if (next !== lock) {
+        if (lock) {
+          var o = fxOf(lock);
+          o.tx = o.ty = o.tl = 0;
+          o.ts = 1;
+        }
+        lock = next;
+        mode = next ? nmode : '';
+      }
+      // bentuk kursor: bulatan, sorotan seukuran link, garis ketik, atau ilang (nyatu ke ikon)
+      var tx = px, ty = py, w = 18, h = 18, r = 9, cls = '';
+      if (lock) {
+        var f = fxOf(lock), rc = lock.getBoundingClientRect(),
+          ew = lock.offsetWidth, eh = lock.offsetHeight,
+          mx = rc.left + rc.width / 2 - f.x, my = rc.top + rc.height / 2 - f.y,
+          k = Math.min(10, Math.max(ew, eh) * .12);
+        f.tx = clamp1((px - mx) / (ew / 2 + 16)) * k;
+        f.ty = clamp1((py - my) / (eh / 2 + 16)) * k;
+        tx = mx + f.tx;
+        ty = my + f.ty;
+        if (mode === 'lift') {
+          lock.classList.add('lifted');
+          f.ts = (1 + Math.min(.12, 10 / Math.max(ew, eh))) * (down ? .96 : 1);
+          f.tl = 1;
+          w = ew;
+          h = eh;
+          r = 14;
+          cls = 'lift';
+        } else {
+          w = ew + 10;
+          h = eh + 6;
+          r = Math.min(h / 2, 18);
+          cls = 'hl';
+        }
+      } else if (el && el.closest(TEXT)) {
+        w = 3;
+        h = Math.min(Math.round(parseFloat(getComputedStyle(el).fontSize) * 1.1), 130);
+        r = 2;
+        cls = 'txt';
+      }
+      var ease = lock ? .28 : .4;
+      cx += (tx - cx) * ease;
+      cy += (ty - cy) * ease;
       cur.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
-      if (Math.abs(tx - cx) + Math.abs(ty - cy) > .2) requestAnimationFrame(curLoop);
+      var size = w + ',' + h + ',' + r + ',' + cls;
+      if (size !== cSize) {
+        cSize = size;
+        cur.style.setProperty('--w', w + 'px');
+        cur.style.setProperty('--h', h + 'px');
+        cur.style.setProperty('--r', r + 'px');
+        cur.classList.toggle('lift', cls === 'lift');
+        cur.classList.toggle('hl', cls === 'hl');
+        cur.classList.toggle('txt', cls === 'txt');
+      }
+      var busy = Math.abs(tx - cx) + Math.abs(ty - cy) > .3;
+      fx = fx.filter(function(f) {
+        f.x += (f.tx - f.x) * .25;
+        f.y += (f.ty - f.y) * .25;
+        f.s += (f.ts - f.s) * .22;
+        f.l += (f.tl - f.l) * .22;
+        var d = Math.abs(f.tx - f.x) + Math.abs(f.ty - f.y) + Math.abs(f.ts - f.s) * 50 + Math.abs(f.tl - f.l);
+        if (d > .02) busy = true;
+        if (f.el !== lock && d < .02) {
+          f.el.style.translate = f.el.style.scale = '';
+          f.el.style.removeProperty('--lift');
+          f.el.classList.remove('lifted');
+          return false;
+        }
+        f.el.style.translate = f.x.toFixed(2) + 'px ' + f.y.toFixed(2) + 'px';
+        f.el.style.scale = f.s.toFixed(4);
+        f.el.style.setProperty('--lift', f.l.toFixed(3));
+        return true;
+      });
+      if (busy) requestAnimationFrame(frame);
       else curRun = false;
+    };
+    var kick = function() {
+      if (!curRun) {
+        curRun = true;
+        requestAnimationFrame(frame);
+      }
     };
     document.addEventListener('pointermove', function(e) {
       if (e.pointerType !== 'mouse') return;
-      tx = e.clientX;
-      ty = e.clientY;
+      px = e.clientX;
+      py = e.clientY;
       if (!cur.classList.contains('show')) {
-        cx = tx;
-        cy = ty;
+        cx = px;
+        cy = py;
         cur.classList.add('show');
       }
-      if (!curRun) {
-        curRun = true;
-        requestAnimationFrame(curLoop);
-      }
+      kick();
     });
-    document.addEventListener('pointerover', function(e) {
-      var lbl = e.target.closest('[data-cursor]');
-      if (lbl) curTxt.textContent = lbl.dataset.cursor;
-      cur.classList.toggle('lbl', !!lbl);
-      cur.classList.toggle('link', !lbl && !!e.target.closest('a, button, .vslot'));
+    document.addEventListener('pointerdown', function() {
+      down = true;
+      cur.classList.add('down');
+      kick();
     });
+    document.addEventListener('pointerup', function() {
+      down = false;
+      cur.classList.remove('down');
+      kick();
+    });
+    window.addEventListener('scroll', kick, { passive: true });
     document.documentElement.addEventListener('pointerleave', function() {
       cur.classList.remove('show');
+      kick();
     });
   }
   var pillVids = [].slice.call(document.querySelectorAll('.pcard video'));

@@ -1521,6 +1521,10 @@ h4 {
   .scard .tags span:hover {
     transform: rotate(0) scale(1.06)
   }
+
+  .pc .scard .tags span:hover {
+    transform: rotate(0)
+  }
 }
 
 .tool .ico {
@@ -1658,6 +1662,11 @@ h4 {
 @media(hover:hover) {
   .talkgo:hover {
     transform: rotate(45deg) scale(1.06)
+  }
+
+  /* kursor iPad aktif: besarnya dari efek magnet */
+  .pc .talkgo:hover {
+    transform: rotate(45deg)
   }
 }
 
