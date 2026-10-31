@@ -3244,18 +3244,35 @@ h3 {
   width: var(--w);
   height: var(--h);
   border-radius: var(--r);
-  background: rgba(118, 118, 140, .45);
-  transition: width .3s var(--ease), height .3s var(--ease), left .3s var(--ease), top .3s var(--ease), border-radius .3s var(--ease), opacity .2s, background .2s, scale .15s
+  background: rgba(20, 16, 92, .62);
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .6);
+  transition: width .3s var(--ease), height .3s var(--ease), left .3s var(--ease), top .3s var(--ease), border-radius .3s var(--ease), opacity .2s, background .25s, box-shadow .25s, scale .15s
+}
+
+/* di atas latar gelap (indigo, biru, foto) kursornya putih biar kontras */
+.cur.dk::before {
+  background: rgba(255, 255, 255, .85);
+  box-shadow: 0 0 0 1.5px rgba(20, 16, 92, .5)
 }
 
 /* sorotan di belakang link */
 .cur.hl::before {
-  background: rgba(118, 118, 140, .22)
+  background: rgba(20, 16, 92, .14);
+  box-shadow: none
+}
+
+.cur.dk.hl::before {
+  background: rgba(255, 255, 255, .22)
 }
 
 /* garis ketik di atas teks */
 .cur.txt::before {
-  background: rgba(118, 118, 140, .75)
+  background: rgba(20, 16, 92, .85);
+  box-shadow: none
+}
+
+.cur.dk.txt::before {
+  background: rgba(255, 255, 255, .92)
 }
 
 /* nyatu ke ikon: kursornya ilang */
@@ -3272,8 +3289,14 @@ h3 {
   box-shadow: 0 0 0 1px rgba(20, 16, 92, calc(var(--lift, 0) * .18)), 0 0 0 5px rgba(255, 255, 255, calc(var(--lift, 0) * .3)), 0 18px 34px -14px rgba(0, 0, 30, calc(var(--lift, 0) * .6)) !important
 }
 
+/* kalender biasanya gak nangkep kursor; di laptop event-nya dibikin bisa disentuh biar ikut efek magnet */
+.pc .cal .ev {
+  pointer-events: auto
+}
+
 /* efek hover lama yang bentrok sama magnet dimatiin */
 .pc .nav .cta:hover,
+.pc .mcard:hover,
 .pc .btn:hover,
 .pc .calfull:hover,
 .pc .cgrid a:hover,
