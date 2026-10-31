@@ -8,13 +8,15 @@
 <link rel="icon" href="favicon.ico?v=2" sizes="32x32">
 <link rel="icon" href="assets/icons/favicon.svg?v=2" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+<link rel="preload" href="assets/fonts/Anton-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/ency.css">
 </head>
 <body>
 
 <nav class="nav" id="nav">
   <div class="wrap">
-    <a href="#top" class="logo">fathir<i>.</i></a>
+    <a href="#top" class="logo" aria-label="Porto by Fathir, ke atas"><span class="lgs" aria-hidden="true"><b>Porto</b><b>by</b></span><span class="lgb" aria-hidden="true">Fathir<i>.</i></span></a>
     <span class="here" id="here" aria-hidden="true"></span>
     <ul>
       <li><a href="#about">About</a></li>
@@ -24,7 +26,7 @@
       <li><a href="#organisasi">Organization</a></li>
       <li><a href="#skills">Skills</a></li>
     </ul>
-    <a href="#kontak" class="cta">Hit me Up</a>
+    <a href="#kontak" class="cta"><span class="av" aria-hidden="true"><img src="assets/img/avatar-fathir.jpg" alt="" width="68" height="68"><i></i></span><span class="ctt">Hit me Up</span></a>
   </div>
   <div class="progress" id="progress"></div>
 </nav>
@@ -54,10 +56,15 @@
         <a href="#kontak" class="btn ghost">Kontak</a>
       </div>
     </div>
-    <figure class="portrait" id="portrait">
-      <img src="assets/img/foto-fathir.jpg" alt="Foto Naufal Fathir Hidayat" id="portraitImg">
-      <figcaption class="tag">Naufal Fathir<span>Portofolio 2026</span></figcaption>
-    </figure>
+    <div class="pwin">
+      <div class="winbar" aria-hidden="true"><i></i><i></i><i></i><span>naufalfathir.my.id/fathir</span></div>
+      <figure class="portrait" id="portrait">
+        <img src="assets/img/foto-fathir.jpg" alt="Foto Naufal Fathir Hidayat" id="portraitImg" class="on">
+        <img src="assets/img/foto-fathir-2.jpg" alt="" aria-hidden="true" decoding="async">
+        <figcaption class="tag">Naufal Fathir<span>Portofolio 2026</span></figcaption>
+      </figure>
+      <span class="hello" aria-hidden="true"><b>hello!</b><svg width="44" height="40" viewBox="0 0 44 40" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4c4 14 14 26 32 30"/><path d="M27 37l9-3-4-8"/></svg></span>
+    </div>
   </div>
   <div class="scrollhint" aria-hidden="true"></div>
 </section>
@@ -68,7 +75,7 @@
   <section class="bnet-intro">
     <div class="wrap">
       <p class="eyebrow rv"><b>01</b> · Thinking proses · @bnet.academy</p>
-      <h2 class="rv" style="--d:1">Hasil bisa ditiru. Cara mikir enggak.</h2>
+      <h2 class="rv" style="--d:1">Hasil bisa ditiru. <span class="t2">Cara mikir enggak.</span></h2>
       <p class="lead rv" style="--d:2">Di @bnet.academy, saya bedah tiap konten buat cari salahnya, terus jadiin salah itu pijakan buat bikin yang berikutnya lebih bagus. Itu yang saya jalanin dari semester 1 sampai 3.</p>
       <ol class="think3">
         <li class="rv" style="--d:3"><b>01</b><span>Pisahin konten dari publikasi</span></li>
@@ -136,7 +143,7 @@
       <div class="top">
         <div>
           <p class="eyebrow rv">Weekly rhythm</p>
-          <h2 class="rv" style="--d:1">Mahasiswa Multitasking Triple Job</h2>
+          <h2 class="rv" style="--d:1">Mahasiswa Multitasking <span class="t2">Triple Job</span></h2>
         </div>
       </div>
       <div class="rope rv" id="rope" role="img" aria-label="Tali kusut berisi kegiatan seperti kuliah, UTS, UAS, kerja, project, dan me time, yang jadi lurus setelah priority list dibuat">
@@ -323,7 +330,7 @@
   <div class="wrap">
     <div class="head">
       <p class="eyebrow rv">Featured</p>
-      <h2 class="rv" style="--d:1">Hands-on projects.</h2>
+      <h2 class="rv" style="--d:1">Hands-on <span class="t2">projects.</span></h2>
     </div>
     <div class="work">
       <article class="wcard rv">
@@ -339,7 +346,7 @@
           </ul>
         </div>
         <div class="facts">
-          <div class="fact big pub"><div class="l">Handled Publication</div><div class="v logos"><img src="assets/img/logo-kemendikdasmen-putih.webp" alt="Kemendikdasmen" width="640" height="120" loading="lazy"><span class="sep" aria-hidden="true"></span><img src="assets/img/logo-lpdp-putih.webp" alt="LPDP" width="337" height="120" loading="lazy"></div></div>
+          <div class="fact big pub"><div class="l">Handled Publication</div><div class="v logos"><img src="assets/img/logo-kemendikdasmen-putih.webp" alt="Kemendikdasmen" width="640" height="120"><span class="sep" aria-hidden="true"></span><img src="assets/img/logo-lpdp-putih.webp" alt="LPDP" width="337" height="120"></div></div>
           <div class="fact"><div class="v">400+</div><div class="l">peserta</div></div>
           <div class="fact"><div class="v">3</div><div class="l">track: NE, CO, FTTH</div></div>
           <div class="fact"><div class="v">5</div><div class="l">orang tim publikasi</div></div>
@@ -411,7 +418,7 @@
   <div class="wrap">
     <div class="head">
       <p class="eyebrow rv">Organization</p>
-      <h2 class="rv" style="--d:1">Beyond work.</h2>
+      <h2 class="rv" style="--d:1">Beyond <span class="t2">work.</span></h2>
     </div>
     <div class="edu three">
       <article class="ecard rv" style="--d:1">
@@ -478,14 +485,25 @@
   <div class="wrap">
     <div class="head">
       <p class="eyebrow rv">Skills</p>
-      <h2 class="rv" style="--d:1">Creative, Network, Data.</h2>
+      <h2 class="rv" style="--d:1">Creative, Network, <span class="t2">Data.</span></h2>
       <p class="lead rv" style="--d:2;margin-top:16px;max-width:36ch">Saya bikin kontennya, dan paham teknis di baliknya: MikroTik, VLAN, sampai FTTH.</p>
     </div>
     <div class="skills">
       <div class="scard rv" style="--d:1"><h3>Creative</h3><div class="tags"><span>Videografi</span><span>Fotografi</span><span>Short-form editing</span><span>Content strategy</span><span>Copywriting ID/EN</span><span>Desain poster & feed</span></div></div>
       <div class="scard rv" style="--d:2"><h3>Network</h3><div class="tags"><span>MikroTik</span><span>VLAN</span><span>IP & subnetting</span><span>Instalasi WiFi</span><span>FTTH</span><span>Kabel LAN</span></div></div>
-      <div class="scard rv" style="--d:3"><h3>Tools & Data</h3><div class="tools"><div class="trow"><span class="tool" title="Figma" aria-label="Figma"><span class="ico"><b>Fg</b><img src="assets/icons/figma.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span><span class="tool" title="CapCut" aria-label="CapCut"><span class="ico"><b>Cc</b><img src="assets/icons/capcut.png" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span><span class="tool" title="Magnific" aria-label="Magnific"><span class="ico"><b>Mg</b><img src="assets/icons/magnific.png" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span></div><div class="trow"><span class="tool" title="Google" aria-label="Google"><span class="ico"><b>G</b><img src="assets/icons/google.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span><span class="tool" title="VS Code" aria-label="VS Code"><span class="ico"><b>VS</b><img src="assets/icons/vscode.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span></div><div class="trow"><span class="tool" title="Claude" aria-label="Claude"><span class="ico"><b>Cl</b><img src="assets/icons/claude.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span><span class="tool" title="ChatGPT" aria-label="ChatGPT"><span class="ico"><b>GP</b><img src="assets/icons/chatgpt.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span><span class="tool" title="Gemini" aria-label="Gemini"><span class="ico"><b>Ge</b><img src="assets/icons/gemini.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span></div></div></div>
+      <div class="scard rv" style="--d:3"><h3>Tools & Data</h3><div class="tools"><div class="trow"><span class="tool" title="Figma" aria-label="Figma"><span class="ico"><b>Fg</b><img src="assets/icons/figma.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span><span class="tool" title="CapCut" aria-label="CapCut"><span class="ico"><b>Cc</b><img src="assets/icons/capcut.png" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span><span class="tool" title="Magnific" aria-label="Magnific"><span class="ico"><b>Mg</b><img src="assets/icons/magnific.png" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span></div><div class="trow"><span class="tool" title="Google" aria-label="Google"><span class="ico"><b>G</b><img src="assets/icons/google.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span><span class="tool" title="VS Code" aria-label="VS Code"><span class="ico"><b>VS</b><img src="assets/icons/vscode.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span></span></div></div></div>
     </div>
+  </div>
+</section>
+
+<!-- DECISION SUPPORT -->
+<section class="block" id="decision">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow rv">AI tools</p>
+      <h2 class="rv" style="--d:1">Decision <span class="t2">Support.</span></h2>
+    </div>
+    <div class="aitools rv" style="--d:2"><span class="tool"><span class="ico"><b>Cl</b><img src="assets/icons/claude.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span><em>Claude</em></span><span class="tool" title="ChatGPT"><span class="ico"><b>GP</b><img src="assets/icons/chatgpt.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span><em>ChatGPT</em></span><span class="tool" title="Gemini"><span class="ico"><b>Ge</b><img src="assets/icons/gemini.svg" alt="" loading="lazy" onload="this.parentNode.classList.add('has')" onerror="this.remove()"></span><em>Gemini</em></span></div>
   </div>
 </section>
 
@@ -510,7 +528,10 @@
 <section class="contact dark aurora dk" id="kontak">
   <i class="gfx" aria-hidden="true"></i>
   <div class="wrap">
-    <p class="eyebrow rv">Hit me up</p>
+    <div class="talkwrap">
+      <p class="talk rv"><span>Hit me up</span><span aria-hidden="true">Hit me up</span></p>
+      <a class="talkgo rv" style="--d:2" href="https://wa.me/6281280412837?text=Halo%20Fathir%2C%20saya%20lihat%20portofolio%20kamu%20dan%20pengen%20ngobrol%20soal%20kerja%20sama." target="_blank" rel="noopener" aria-label="Chat Fathir di WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+    </div>
     <h2 class="rv" style="--d:1;max-width:16ch" aria-label="Visual design that speaks louder than words."><span class="vd" aria-hidden="true"><i>Visual design</i><i>Visual design</i><i>Visual design</i>Visual design</span> <span aria-hidden="true">that speaks louder than words.</span></h2>
    <!-- hilangin 2 tombol -->
     <!-- <div class="btns rv" style="--d:2;justify-content:center">

@@ -467,8 +467,8 @@
   // scroll-driven
   var nav = document.getElementById('nav'),
     prog = document.getElementById('progress'),
-    img = document.getElementById('portraitImg'),
     portrait = document.getElementById('portrait'),
+    pics = [].slice.call(portrait.querySelectorAll('img')),
     pil = document.querySelector('.pillars'),
     neq = document.getElementById('neq'),
     p1 = document.getElementById('p1'),
@@ -482,7 +482,7 @@
     tis = [].slice.call(document.querySelectorAll('#tl .ti')),
     links = [].slice.call(document.querySelectorAll('.nav ul a')),
     here = document.getElementById('here'),
-    secs = [['about', 'About'], ['bnet', 'Thinking Proses'], ['result', 'Result'], ['Experience', 'Experience'], ['organisasi', 'Organization'], ['pendidikan', 'Education'], ['skills', 'Skills'], ['closing', ''], ['kontak', 'Contact']].map(function(s) {
+    secs = [['about', 'About'], ['bnet', 'Thinking Proses'], ['result', 'Result'], ['Experience', 'Experience'], ['organisasi', 'Organization'], ['pendidikan', 'Education'], ['skills', 'Skills'], ['decision', 'Decision Support'], ['closing', ''], ['kontak', 'Contact']].map(function(s) {
       return { el: document.getElementById(s[0]), label: s[1] };
     }),
     curLabel = null,
@@ -505,7 +505,10 @@
     if (!reduce) {
       var r = portrait.getBoundingClientRect(),
         k = Math.min(Math.max(1 - r.bottom / (vh + r.height), 0), 1);
-      img.style.transform = 'scale(' + (1.12 - k * .12) + ') translateY(' + (k * 24) + 'px)';
+      var pt = 'scale(' + (1.12 - k * .12) + ') translateY(' + (k * 24) + 'px)';
+      pics.forEach(function(p) {
+        p.style.transform = pt;
+      });
     }
     // pillars
     var pr = pil.getBoundingClientRect(),
@@ -571,6 +574,245 @@
       here.appendChild(s);
     }
     here.classList.toggle('show', !!label);
+  }
+  // foto hero gantian: tiap kursor masuk ke foto ganti ke foto berikutnya, di HP tiap di-tap
+  var picN = 0,
+    hoverMQ = window.matchMedia('(hover: hover)');
+
+  function nextPic() {
+    pics[picN].classList.remove('on');
+    picN = (picN + 1) % pics.length;
+    pics[picN].classList.add('on');
+  }
+  portrait.addEventListener('pointerenter', function(e) {
+    if (e.pointerType === 'mouse') nextPic();
+  });
+  portrait.addEventListener('click', function() {
+    if (!hoverMQ.matches) nextPic();
+  });
+  // kursor ala iPad (cuma mouse/trackpad, gak di HP). Warnanya ngikutin latar di bawahnya:
+  // putih di section gelap, indigo di section terang. Semua elemen bereaksi:
+  // - ikon/tombol/item kecil (LIFT): nempel kayak magnet, membesar + stroke & bayangan, kursornya nyatu
+  // - kartu, foto, angka & judul gede (FLOAT): miring 3D ngikutin kursor + ketarik dikit
+  // - link lain: sorotan di belakangnya; teks: kursornya jadi garis ketik
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
+    var LIFT = '.tool .ico, .talkgo, .cgrid a, .nav .cta, .btn, .calfull, .snd, .scard .tags span, #prio li, .cal .ev, .week span, .chip, .badge',
+      FLOAT = '.think3 li, .prioCard, .tbody, .mcard, .ncard, .ecard, .scard, .vslot, .fact, .imgal figure, .stat, .bignum .n, .pwin, .cookie, h1, h2, .quote blockquote, .talk',
+      TEXT = 'p, h1, h2, h3, h4, li, blockquote, dt, dd, figcaption',
+      cur = document.createElement('div'),
+      px = -99, py = -99, cx = -99, cy = -99, cSize = '',
+      lock = null, mode = '', card = null, down = false, fx = [], curRun = false,
+      bgOf = new WeakMap();
+    cur.className = 'cur';
+    cur.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(cur);
+    document.documentElement.classList.add('pc');
+
+    var clamp1 = function(v) {
+      return Math.max(-1, Math.min(1, v));
+    };
+    // latar elemen: true = gelap, false = terang, null = transparan (cek lapisan di bawahnya)
+    var bgDark = function(n) {
+      if (bgOf.has(n)) return bgOf.get(n);
+      var v = null;
+      if (n.tagName === 'IMG' || n.tagName === 'VIDEO') v = true;
+      else {
+        var c = getComputedStyle(n).backgroundColor.match(/[\d.]+/g);
+        if (c && (c[3] === undefined || +c[3] > .5)) v = (.299 * c[0] + .587 * c[1] + .114 * c[2]) / 255 < .55;
+      }
+      bgOf.set(n, v);
+      return v;
+    };
+    var darkAt = function(x, y) {
+      var st = document.elementsFromPoint(x, y);
+      for (var i = 0; i < st.length; i++) {
+        if (st[i] === cur) continue;
+        var v = bgDark(st[i]);
+        if (v !== null) return v;
+      }
+      return false;
+    };
+    var hasBg = function(el) {
+      var cs = getComputedStyle(el), c = cs.backgroundColor.match(/[\d.]+/g);
+      if ((cs.webkitBackgroundClip || cs.backgroundClip) === 'text') return false; // angka bergradasi, bukan kotak
+      return cs.backgroundImage !== 'none' || !!(c && (c[3] === undefined || +c[3] > .1));
+    };
+    // efek per elemen, dihaluskan tiap frame. Transisi CSS-nya buat properti yang kita gerakin dimatiin
+    // sementara biar gak telat, transform bawaan (mis. kartu miring) tetap dipertahanin.
+    var fxOf = function(el, kind) {
+      for (var i = 0; i < fx.length; i++)
+        if (fx[i].el === el) return fx[i];
+      var cs = getComputedStyle(el),
+        f = { el: el, kind: kind, x: 0, y: 0, s: 1, l: 0, rx: 0, ry: 0, tx: 0, ty: 0, ts: 1, tl: 0, trx: 0, try_: 0,
+          base: kind === 'float' && cs.transform !== 'none' ? ' ' + cs.transform : '', shadow: hasBg(el), tr: el.style.transition };
+      el.style.transition = cs.transition + ', translate 0s, scale 0s' + (kind === 'float' ? ', transform 0s' : '');
+      if (f.shadow) el.classList.add('lifted');
+      fx.push(f);
+      return f;
+    };
+    var aim = function(el, kind, slop) {
+      var f = fxOf(el, kind), rc = el.getBoundingClientRect(),
+        ew = el.offsetWidth || rc.width, eh = el.offsetHeight || rc.height,
+        mx = rc.left + rc.width / 2 - f.x, my = rc.top + rc.height / 2 - f.y,
+        nx = clamp1((px - mx) / (ew / 2 + slop)), ny = clamp1((py - my) / (eh / 2 + slop)),
+        big = Math.max(ew, eh);
+      return { f: f, ew: ew, eh: eh, mx: mx, my: my, nx: nx, ny: ny, big: big };
+    };
+    var reset = function(el) {
+      for (var i = 0; i < fx.length; i++)
+        if (fx[i].el === el) {
+          var o = fx[i];
+          o.tx = o.ty = o.tl = o.trx = o.try_ = 0;
+          o.ts = 1;
+        }
+    };
+    var inside = function(el, pad) {
+      var b = el.getBoundingClientRect();
+      return px > b.left - pad && px < b.right + pad && py > b.top - pad && py < b.bottom + pad;
+    };
+    var frame = function() {
+      var shown = cur.classList.contains('show'),
+        el = shown ? document.elementFromPoint(px, py) : null,
+        next = null, nmode = '', ncard = null;
+      // magnet: tombol yang lagi ditempel baru lepas kalau kursor keluar 16px dari pinggirnya
+      if (lock && shown && inside(lock, 16)) {
+        next = lock;
+        nmode = mode;
+      } else if (el) {
+        next = el.closest(LIFT);
+        nmode = 'lift';
+        if (!next) {
+          next = el.closest('a, button');
+          nmode = 'hl';
+        }
+      }
+      if (el) {
+        ncard = el.closest(FLOAT);
+        if (ncard && ncard.matches('.rv:not(.in)')) ncard = null;
+      }
+      if (next !== lock) {
+        if (lock) reset(lock);
+        lock = next;
+        mode = next ? nmode : '';
+      }
+      if (ncard !== card) {
+        if (card) reset(card);
+        card = ncard;
+      }
+      // kartu: miring 3D ngikutin kursor, ketarik dikit, membesar dikit
+      if (card && card !== lock) {
+        var q = aim(card, 'float', 0),
+          deg = Math.min(7, 1400 / q.big),
+          kk = Math.min(8, q.big * .03);
+        q.f.trx = -q.ny * deg;
+        q.f.try_ = q.nx * deg;
+        q.f.tx = q.nx * kk;
+        q.f.ty = q.ny * kk;
+        q.f.ts = 1 + Math.min(.03, 12 / q.big);
+        q.f.tl = 1;
+      }
+      // bentuk kursor: bulatan, sorotan seukuran link, garis ketik, atau ilang (nyatu ke tombol)
+      var tx = px, ty = py, w = 18, h = 18, r = 9, cls = '';
+      if (lock) {
+        var g = aim(lock, 'lift', 16),
+          k = Math.min(10, g.big * .12);
+        g.f.tx = g.nx * k;
+        g.f.ty = g.ny * k;
+        tx = g.mx + g.f.tx;
+        ty = g.my + g.f.ty;
+        if (mode === 'lift') {
+          g.f.ts = (1 + Math.min(.12, 10 / g.big)) * (down ? .96 : 1);
+          g.f.tl = 1;
+          w = g.ew;
+          h = g.eh;
+          r = 14;
+          cls = 'lift';
+        } else {
+          w = g.ew + 10;
+          h = g.eh + 6;
+          r = Math.min(h / 2, 18);
+          cls = 'hl';
+        }
+      } else if (el && el.closest(TEXT)) {
+        w = 3;
+        h = Math.min(Math.round(parseFloat(getComputedStyle(el).fontSize) * 1.1), 130);
+        r = 2;
+        cls = 'txt';
+      }
+      var ease = lock ? .28 : .4;
+      cx += (tx - cx) * ease;
+      cy += (ty - cy) * ease;
+      cur.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+      var size = w + ',' + h + ',' + r + ',' + cls;
+      if (size !== cSize) {
+        cSize = size;
+        cur.style.setProperty('--w', w + 'px');
+        cur.style.setProperty('--h', h + 'px');
+        cur.style.setProperty('--r', r + 'px');
+        cur.classList.toggle('lift', cls === 'lift');
+        cur.classList.toggle('hl', cls === 'hl');
+        cur.classList.toggle('txt', cls === 'txt');
+      }
+      if (shown) cur.classList.toggle('dk', darkAt(px, py));
+      var busy = Math.abs(tx - cx) + Math.abs(ty - cy) > .3;
+      fx = fx.filter(function(f) {
+        f.x += (f.tx - f.x) * .22;
+        f.y += (f.ty - f.y) * .22;
+        f.s += (f.ts - f.s) * .2;
+        f.l += (f.tl - f.l) * .2;
+        f.rx += (f.trx - f.rx) * .18;
+        f.ry += (f.try_ - f.ry) * .18;
+        var d = Math.abs(f.tx - f.x) + Math.abs(f.ty - f.y) + Math.abs(f.ts - f.s) * 50 + Math.abs(f.tl - f.l) + Math.abs(f.trx - f.rx) + Math.abs(f.try_ - f.ry);
+        if (d > .02) busy = true;
+        if (f.el !== lock && f.el !== card && d < .02) {
+          f.el.style.translate = f.el.style.scale = '';
+          if (f.kind === 'float') f.el.style.transform = '';
+          f.el.style.transition = f.tr;
+          f.el.style.removeProperty('--lift');
+          f.el.classList.remove('lifted');
+          return false;
+        }
+        f.el.style.translate = f.x.toFixed(2) + 'px ' + f.y.toFixed(2) + 'px';
+        f.el.style.scale = f.s.toFixed(4);
+        if (f.kind === 'float') f.el.style.transform = 'perspective(1000px) rotateX(' + f.rx.toFixed(2) + 'deg) rotateY(' + f.ry.toFixed(2) + 'deg)' + f.base;
+        if (f.shadow) f.el.style.setProperty('--lift', f.l.toFixed(3));
+        return true;
+      });
+      if (busy) requestAnimationFrame(frame);
+      else curRun = false;
+    };
+    var kick = function() {
+      if (!curRun) {
+        curRun = true;
+        requestAnimationFrame(frame);
+      }
+    };
+    document.addEventListener('pointermove', function(e) {
+      if (e.pointerType !== 'mouse') return;
+      px = e.clientX;
+      py = e.clientY;
+      if (!cur.classList.contains('show')) {
+        cx = px;
+        cy = py;
+        cur.classList.add('show');
+      }
+      kick();
+    });
+    document.addEventListener('pointerdown', function() {
+      down = true;
+      cur.classList.add('down');
+      kick();
+    });
+    document.addEventListener('pointerup', function() {
+      down = false;
+      cur.classList.remove('down');
+      kick();
+    });
+    window.addEventListener('scroll', kick, { passive: true });
+    document.documentElement.addEventListener('pointerleave', function() {
+      cur.classList.remove('show');
+      kick();
+    });
   }
   var pillVids = [].slice.call(document.querySelectorAll('.pcard video'));
   // pilar yang dipin: kalau isinya lebih tinggi dari layar, kecilin dikit biar nggak kepotong
