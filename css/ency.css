@@ -1,0 +1,1445 @@
+/* =========================================================
+   ency.css — lapisan redesign (referensi: designbyency.com)
+   Dimuat SETELAH style.css. Struktur, copy, dan semua animasi JS tetap;
+   file ini cuma ganti tampilan: warna blok tegas (indigo / biru / putih),
+   judul condensed gede, label tulisan tangan di "selotip", label mono.
+   Mau balik ke tampilan lama? Hapus <link> ency.css di index.html.
+   ========================================================= */
+@font-face {
+  font-family: "Anton";
+  src: url("../assets/fonts/Anton-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap
+}
+
+@font-face {
+  font-family: "Caveat";
+  src: url("../assets/fonts/Caveat-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap
+}
+
+@font-face {
+  font-family: "DM Mono";
+  src: url("../assets/fonts/DMMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap
+}
+
+@font-face {
+  font-family: "DM Mono";
+  src: url("../assets/fonts/DMMono-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap
+}
+
+:root {
+  --blue: #0b0bf0;
+  --blue2: #5b5dff;
+  --indigo: #14105c;
+  --indigo2: #1e1872;
+  --lav: #9c9aff;
+  --lav2: #cfceff;
+  --lavbg: #f2f2fd;
+  /* aksen selotip & highlight (mint brand) */
+  --tape: var(--accent);
+  --ink: #14105c;
+  --ink2: #4a4880;
+  --ink3: #7a79a6;
+  --line: rgba(20, 16, 92, .1);
+  --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+  --hand: "Caveat", "Comic Sans MS", cursive;
+  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --bluegrad: linear-gradient(160deg, var(--blue2) 0%, var(--blue) 70%);
+}
+
+html {
+  scroll-padding-top: 84px
+}
+
+body {
+  background: #fff;
+  color: var(--ink)
+}
+
+/* lapisan grid/grain/glow lama dimatiin: referensinya bersih, blok warna solid */
+.gfx,
+.block::before,
+.closing::before,
+.aurora::before,
+.aurora::after {
+  display: none !important
+}
+
+/* ---------- tipografi ---------- */
+h1,
+h2,
+.bignum .n,
+.stat .v,
+.ncard .v,
+.fact .v,
+.pcard h3,
+.scard h3,
+.quote blockquote {
+  font-family: var(--display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .004em;
+  line-height: .92
+}
+
+h2 {
+  font-size: clamp(50px, 8.2vw, 112px)
+}
+
+h3,
+h4 {
+  font-weight: 600;
+  letter-spacing: -.02em
+}
+
+.t2 {
+  color: var(--lav)
+}
+
+.lead {
+  font-weight: 400;
+  color: var(--ink2)
+}
+
+/* label section = tulisan tangan di atas selotip miring */
+.head > .eyebrow,
+.bnet-intro .eyebrow,
+.ritme .top .eyebrow,
+.bignum .eyebrow,
+.closing .eyebrow {
+  display: inline-block;
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--indigo) !important;
+  background: var(--tape);
+  padding: 2px 12px 4px;
+  border-radius: 3px;
+  transform: rotate(-3deg);
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .45)
+}
+
+.head > .eyebrow b,
+.bnet-intro .eyebrow b {
+  color: inherit !important
+}
+
+.head > .eyebrow.rv.in,
+.bnet-intro .eyebrow.rv.in,
+.ritme .top .eyebrow.rv.in,
+.bignum .eyebrow.rv.in,
+.closing .eyebrow.rv.in {
+  transform: rotate(-3deg)
+}
+
+/* label kecil di kartu = mono huruf kapital renggang */
+.wcard .eyebrow,
+.mcard .eyebrow,
+.ecard .eyebrow,
+.ti .when,
+.pcard .num,
+.pcard dt,
+.step .k,
+.think3 b,
+.cgrid .l,
+.badge,
+.portrait .tag span,
+.fact.pub .l {
+  font-family: var(--mono) !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase
+}
+
+/* ---------- nav: pil putih ngambang ---------- */
+.nav,
+.nav.scrolled,
+.nav.ondark {
+  height: 72px;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border: 0;
+  color: var(--ink)
+}
+
+.nav .wrap {
+  max-width: 1360px;
+  gap: 10px
+}
+
+.logo,
+.nav ul,
+.nav .cta {
+  background: #fff;
+  border-radius: 999px;
+  box-shadow: 0 10px 30px -12px rgba(10, 8, 60, .45), 0 0 0 1px rgba(20, 16, 92, .06)
+}
+
+.logo {
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 18px;
+  font-size: 18px;
+  color: var(--indigo);
+  flex: none
+}
+
+.logo i {
+  color: var(--blue)
+}
+
+.nav ul,
+.nav.ondark ul {
+  padding: 5px;
+  gap: 2px;
+  color: var(--ink2)
+}
+
+.nav ul a {
+  display: block;
+  padding: 7px 14px;
+  font-weight: 500;
+  white-space: nowrap
+}
+
+/* tablet kecil: menu gak muat sebaris, jadi pakai label section kayak di HP */
+@media(min-width:761px) and (max-width:900px) {
+  .nav ul {
+    display: none
+  }
+
+  .here {
+    display: block;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 32px;
+    margin: 0 2px;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity .3s
+  }
+
+  .here.show {
+    opacity: 1
+  }
+
+  .here span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    max-width: 100%;
+    padding: 0 12px;
+    line-height: 32px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .92);
+    color: var(--indigo);
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: hereIn .5s var(--ease) both
+  }
+
+  .here span.out {
+    animation: hereOut .35s var(--ease) both
+  }
+}
+
+/* tablet: menu dirapetin biar semua pil muat sebaris */
+@media(min-width:901px) and (max-width:1100px) {
+  .cta .wave {
+    display: none
+  }
+
+  .nav ul a {
+    padding: 6px 9px;
+    font-size: 13px
+  }
+}
+
+.nav ul a:hover,
+.nav.ondark ul a:hover {
+  color: var(--blue)
+}
+
+.nav ul a.on,
+.nav.ondark ul a.on {
+  background: var(--blue);
+  color: #fff
+}
+
+.nav .cta,
+.nav.ondark .cta {
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px 0 5px;
+  font-size: 15px;
+  font-weight: 600;
+  background: #fff;
+  color: var(--indigo);
+  flex: none
+}
+
+.cta .av {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  flex: none
+}
+
+.cta .av img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover
+}
+
+/* titik hijau: lagi online */
+.cta .av i {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px #fff
+}
+
+.cta .wave {
+  display: inline-block;
+  transform-origin: 70% 80%;
+  animation: waveHi 2.6s ease-in-out 1.2s 2
+}
+
+@keyframes waveHi {
+
+  0%,
+  60%,
+  100% {
+    transform: rotate(0)
+  }
+
+  10%,
+  30% {
+    transform: rotate(16deg)
+  }
+
+  20%,
+  40% {
+    transform: rotate(-10deg)
+  }
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  bottom: auto;
+  height: 3px;
+  background: var(--accent)
+}
+
+@media(max-width:760px) {
+  .nav {
+    height: 64px
+  }
+
+  .logo,
+  .nav .cta {
+    height: 40px
+  }
+
+  .logo {
+    padding: 0 14px;
+    font-size: 17px
+  }
+
+  .nav .cta,
+  .nav.ondark .cta {
+    padding-right: 14px;
+    font-size: 14px
+  }
+
+  .cta .av,
+  .cta .av img {
+    width: 30px;
+    height: 30px
+  }
+
+  /* nama section di HP jadi pil putih kecil */
+  .here,
+  .nav.ondark .here {
+    height: 32px;
+    margin: 0 2px;
+    border: 0
+  }
+
+  .here span,
+  .nav.ondark .here span {
+    left: 0;
+    right: auto;
+    max-width: 100%;
+    padding: 0 12px;
+    line-height: 32px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .92);
+    color: var(--indigo);
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 20px -10px rgba(10, 8, 60, .5)
+  }
+}
+
+/* HP: lambaian disembunyiin biar nama section di tengah muat */
+@media(max-width:430px) {
+  .cta .wave {
+    display: none
+  }
+
+  .here span,
+  .nav.ondark .here span {
+    letter-spacing: .06em;
+    padding: 0 10px
+  }
+}
+
+/* ---------- tombol ---------- */
+.btn {
+  min-height: 52px;
+  padding: 0 26px;
+  font-size: 16px
+}
+
+.btn.primary,
+.hero .btn.primary {
+  background: #fff;
+  color: var(--indigo);
+  box-shadow: none
+}
+
+.btn.ghost,
+.hero .btn.ghost {
+  background: transparent;
+  color: #fff;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .45)
+}
+
+/* ---------- hero (indigo) ---------- */
+.hero,
+.hero.aurora {
+  background: var(--indigo);
+  color: #fff;
+  padding: 104px 0 72px
+}
+
+.hero h1 {
+  font-size: clamp(64px, 19vw, 132px);
+  margin-bottom: 26px
+}
+
+@media(min-width:861px) {
+  .hero h1 {
+    font-size: clamp(84px, 9.4vw, 120px)
+  }
+}
+
+.hero .lead {
+  color: rgba(255, 255, 255, .82);
+  max-width: 34ch
+}
+
+/* highlight = mint + coretan tangan di bawahnya */
+.hero .mark {
+  color: var(--accent);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M2 8.5C40 3 90 2.5 198 6.5' fill='none' stroke='%2340FFA7' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") 0 100% / 100% .32em no-repeat;
+  padding: 0 0 .14em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone
+}
+
+.hero .chip {
+  background: transparent;
+  color: rgba(255, 255, 255, .86);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase
+}
+
+.scrollhint {
+  border-color: rgba(255, 255, 255, .3)
+}
+
+.scrollhint::after {
+  background: rgba(255, 255, 255, .6)
+}
+
+/* foto di dalam jendela browser, dengan blok biru di belakangnya */
+.pwin {
+  position: relative;
+  border-radius: 28px;
+  background: var(--indigo2);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .1), 0 40px 80px -40px rgba(0, 0, 0, .7);
+  padding: 0 10px 10px;
+  opacity: 0;
+  transform: translateY(40px) scale(.96);
+  transition: opacity 1.4s var(--ease) .35s, transform 1.4s var(--ease) .35s
+}
+
+.loaded .pwin {
+  opacity: 1;
+  transform: none
+}
+
+.pwin::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -7%;
+  bottom: -6%;
+  width: 72%;
+  height: 64%;
+  background: var(--bluegrad);
+  border-radius: 28px;
+  clip-path: polygon(0 18%, 100% 0, 100% 100%, 12% 100%)
+}
+
+.winbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 6px
+}
+
+.winbar i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .22)
+}
+
+.winbar span {
+  flex: 1;
+  margin: 0 8px 0 10px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .07);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 24px;
+  color: rgba(255, 255, 255, .55);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
+.pwin .portrait,
+.loaded .pwin .portrait {
+  border-radius: 20px;
+  box-shadow: none;
+  opacity: 1;
+  transform: none;
+  transition: none
+}
+
+.portrait .tag {
+  border-radius: 999px;
+  padding: 10px 10px 10px 18px;
+  background: rgba(255, 255, 255, .9);
+  color: var(--indigo);
+  font-size: 14px
+}
+
+.portrait .tag span {
+  background: var(--blue);
+  color: #fff !important;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 10px !important
+}
+
+.hello {
+  position: absolute;
+  left: 22px;
+  top: 58px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  pointer-events: none
+}
+
+.hello b {
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--indigo);
+  background: var(--tape);
+  padding: 2px 12px 5px;
+  border-radius: 3px;
+  transform: rotate(-6deg);
+  box-shadow: 0 6px 14px -6px rgba(0, 0, 0, .5)
+}
+
+.hello svg {
+  margin: 4px 0 0 34px;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .45))
+}
+
+@media(max-width:860px) {
+  .pwin {
+    max-width: 440px;
+    margin-top: 12px
+  }
+
+  .pwin .portrait {
+    max-width: none
+  }
+}
+
+/* ---------- BNET intro (biru) ---------- */
+.bnet-intro {
+  background: var(--blue);
+  padding-bottom: clamp(80px, 10vw, 130px)
+}
+
+.bnet-intro h2 {
+  max-width: none;
+  margin-top: 26px
+}
+
+/* kalimat kedua pindah baris, warna lavender kayak judul 2 warna di referensi */
+.bnet-intro .t2 {
+  display: block;
+  color: #aeacff
+}
+
+.bnet-intro .lead {
+  color: rgba(255, 255, 255, .84)
+}
+
+/* 3 langkah = kartu putih "STEP 01 / 03" */
+.think3 {
+  gap: 14px;
+  max-width: 980px;
+  margin-top: 48px
+}
+
+.think3 li {
+  background: #fff !important;
+  border: 0 !important;
+  box-shadow: 0 30px 50px -36px rgba(0, 0, 40, .7) !important;
+  color: var(--indigo);
+  border-radius: 28px;
+  padding: 24px 24px 26px;
+  font-size: 19px;
+  gap: 26px
+}
+
+.think3 li:nth-child(1) {
+  transform: rotate(-1.5deg)
+}
+
+.think3 li:nth-child(3) {
+  transform: rotate(1.5deg)
+}
+
+.think3 b {
+  color: var(--blue)
+}
+
+.think3 b::before,
+.step .k::before {
+  content: "STEP "
+}
+
+.think3 b::after {
+  content: " / 03";
+  opacity: .5
+}
+
+@media(max-width:760px) {
+  .think3 li {
+    gap: 14px;
+    padding: 18px 20px
+  }
+
+  .think3 li:nth-child(n) {
+    transform: none
+  }
+
+  .think3 b {
+    flex: none
+  }
+}
+
+/* ---------- pilar Konten ≠ Publikasi (indigo) ---------- */
+.pillars {
+  background: var(--indigo)
+}
+
+.pillars .head h2 {
+  font-size: clamp(52px, 9vw, 124px);
+  margin-top: 18px
+}
+
+.pillars .head .lead {
+  color: rgba(255, 255, 255, .72)
+}
+
+.pcard {
+  border-radius: 36px;
+  border: 1px solid transparent
+}
+
+#p1 {
+  background: var(--bluegrad);
+  border-color: rgba(255, 255, 255, .14);
+  --pc: #fff;
+  --pc-rgb: 255, 255, 255
+}
+
+#p2 {
+  background: var(--indigo2);
+  border-color: rgba(156, 154, 255, .22);
+  --pc: var(--accent);
+  --pc-rgb: 64, 255, 167
+}
+
+.pcard.on {
+  box-shadow: 0 40px 90px -45px rgba(0, 0, 0, .8)
+}
+
+.pcard .num {
+  color: var(--accent)
+}
+
+#p1 .num {
+  color: #fff
+}
+
+.pcard .num::before {
+  box-shadow: none
+}
+
+.pcard h3 {
+  -webkit-background-clip: border-box;
+  background: none;
+  background-clip: border-box;
+  color: #fff;
+  font-size: clamp(48px, 5vw, 72px);
+  margin: 10px 0 4px
+}
+
+.pcard .sub {
+  color: rgba(255, 255, 255, .78)
+}
+
+.pcard dt {
+  color: var(--lav2) !important;
+  font-size: 11px !important
+}
+
+#p2 dt {
+  color: var(--lav) !important
+}
+
+.pcard dd {
+  border-bottom-color: rgba(255, 255, 255, .12)
+}
+
+.pcard .ex {
+  color: rgba(255, 255, 255, .72)
+}
+
+.pcard .tags span {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .4);
+  color: #fff
+}
+
+.pcard::after {
+  font-family: var(--display);
+  font-weight: 400;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .16)
+}
+
+/* ---------- quote (putih) ---------- */
+.quote,
+.quote.aurora {
+  background: #fff;
+  color: var(--ink)
+}
+
+.quote.aurora p.small {
+  color: var(--ink2)
+}
+
+.quote blockquote {
+  font-size: clamp(46px, 7.6vw, 104px);
+  max-width: 14ch;
+  color: var(--blue)
+}
+
+/* kata kuncinya ditempel "selotip" mint, nyambung sama label section */
+.quote blockquote em {
+  display: inline-block;
+  color: var(--indigo);
+  background: var(--accent);
+  padding: .06em .12em 0;
+  border-radius: .04em;
+  transform: rotate(-2deg)
+}
+
+.quote blockquote em + em,
+.quote blockquote em:last-of-type {
+  transform: rotate(1.5deg)
+}
+
+/* ---------- weekly rhythm (indigo) ---------- */
+.ritme {
+  background: var(--indigo);
+  padding-top: clamp(90px, 12vw, 150px)
+}
+
+.ritme h2 {
+  font-size: clamp(48px, 7vw, 96px);
+  max-width: 13ch;
+  margin-top: 18px
+}
+
+.step {
+  border-radius: 36px;
+  border: 1px solid transparent
+}
+
+.plancard {
+  background: var(--indigo2) !important;
+  border-color: rgba(156, 154, 255, .2) !important;
+  box-shadow: none !important
+}
+
+.prioCard {
+  background: var(--bluegrad) !important;
+  border-color: rgba(255, 255, 255, .14) !important;
+  box-shadow: 0 30px 60px -40px rgba(0, 0, 0, .8) !important
+}
+
+.prioCard p {
+  color: rgba(255, 255, 255, .82)
+}
+
+.step .k {
+  color: var(--accent);
+  -webkit-text-stroke: 0;
+  line-height: 1.4
+}
+
+.step .k::after {
+  content: " / 02";
+  opacity: .55
+}
+
+.step h3 {
+  font-weight: 600
+}
+
+.prio i {
+  background: #fff
+}
+
+.prio button:focus-visible {
+  outline-color: #fff
+}
+
+/* ---------- 1,45M (biru) ---------- */
+.bignum {
+  background: var(--blue);
+  padding-top: clamp(90px, 12vw, 150px)
+}
+
+.bignum .n {
+  font-size: clamp(120px, 30vw, 380px);
+  letter-spacing: 0;
+  background: linear-gradient(180deg, #fff 55%, var(--lav2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-top: 12px
+}
+
+.bignum .cap {
+  color: rgba(255, 255, 255, .84)
+}
+
+/* angka kecil: tanpa kartu, dipisah garis tipis vertikal */
+.statrow {
+  gap: 0;
+  margin-top: 64px
+}
+
+.stat {
+  background: none !important;
+  border: 0 !important;
+  border-left: 1px solid rgba(255, 255, 255, .28) !important;
+  border-radius: 0;
+  box-shadow: none !important;
+  padding: 6px 28px 8px
+}
+
+.stat .v {
+  font-size: clamp(54px, 6vw, 84px);
+  letter-spacing: 0
+}
+
+.stat .l {
+  color: rgba(255, 255, 255, .8)
+}
+
+@media(max-width:760px) {
+  .stat {
+    border-left: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, .28) !important;
+    padding: 22px 0
+  }
+}
+
+/* ---------- section terang & biru (block) ---------- */
+.block .head h2 {
+  color: var(--blue);
+  margin-top: 22px
+}
+
+#result > .block:first-child,
+#pendidikan,
+#Experience > .block:first-child,
+.closing {
+  background: #fff
+}
+
+/* angka hasil: gaya statistik referensi */
+.nums {
+  gap: 0
+}
+
+.ncard {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  border-left: 1px solid var(--line);
+  padding: 4px 24px 8px
+}
+
+.ncard .v {
+  font-size: clamp(64px, 7.4vw, 104px);
+  letter-spacing: 0;
+  color: var(--blue)
+}
+
+.ncard .l {
+  font-weight: 600;
+  color: var(--ink)
+}
+
+@media(max-width:900px) {
+  .nums {
+    row-gap: 28px
+  }
+
+  .ncard:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0
+  }
+}
+
+/* karya (biru, kartu putih) */
+#karya,
+#karya.block {
+  background: var(--blue);
+  color: #fff;
+  padding-top: clamp(90px, 12vw, 150px) !important
+}
+
+#karya .head h2 {
+  color: #fff
+}
+
+#karya .t2 {
+  color: #aeacff
+}
+
+.wcard {
+  border-radius: 40px;
+  box-shadow: none;
+  color: var(--ink)
+}
+
+@media(hover:hover) {
+  .wcard:hover {
+    box-shadow: 0 40px 70px -40px rgba(0, 0, 40, .75)
+  }
+}
+
+.wcard .eyebrow,
+.mcard .eyebrow {
+  color: var(--blue)
+}
+
+.wcard .eyebrow b {
+  color: var(--blue)
+}
+
+.wcard h3 {
+  font-size: clamp(30px, 3.4vw, 44px);
+  font-weight: 600;
+  letter-spacing: -.03em
+}
+
+.wcard li::before {
+  background: var(--blue);
+  border-radius: 3px
+}
+
+.fact {
+  background: var(--lavbg);
+  border-radius: 24px
+}
+
+.fact .v {
+  color: var(--blue);
+  letter-spacing: 0;
+  font-size: clamp(36px, 3.6vw, 48px)
+}
+
+.fact.big {
+  background: var(--bluegrad) !important;
+  border: 0 !important;
+  box-shadow: none !important
+}
+
+.fact.big .v {
+  color: #fff
+}
+
+.facts.imi .fact.big .v {
+  color: var(--accent);
+  text-shadow: none;
+  font-size: clamp(64px, 7vw, 92px)
+}
+
+.fact.big .l {
+  color: rgba(255, 255, 255, .84)
+}
+
+.fact.pub .l {
+  color: var(--accent) !important
+}
+
+@media(max-width:480px) {
+  .fact {
+    padding: 18px
+  }
+
+  .fact .v {
+    font-size: 30px
+  }
+}
+
+.roles span {
+  background: var(--lavbg);
+  color: var(--blue)
+}
+
+.imgal figure {
+  background: var(--lavbg)
+}
+
+.mcard {
+  border-radius: 32px;
+  box-shadow: none;
+  color: var(--ink)
+}
+
+.mcard h4 {
+  font-weight: 600
+}
+
+/* ---------- experience (putih) ---------- */
+.strikeh {
+  font-size: clamp(46px, 6.6vw, 92px);
+  line-height: .98;
+  max-width: 17ch
+}
+
+.strike s {
+  color: var(--ink3)
+}
+
+.rv.in .strike s {
+  color: rgba(20, 16, 92, .32)
+}
+
+.strike ins {
+  color: var(--blue);
+  background: linear-gradient(transparent 60%, var(--accent) 60%, var(--accent) 88%, transparent 88%)
+}
+
+.tl::before {
+  background: rgba(11, 11, 240, .12)
+}
+
+.tl .fill {
+  background: var(--blue)
+}
+
+.ti::before {
+  background: #fff;
+  box-shadow: inset 0 0 0 2px rgba(11, 11, 240, .25)
+}
+
+.ti.hit::before {
+  background: var(--blue);
+  box-shadow: inset 0 0 0 2px var(--blue), 0 0 0 6px rgba(11, 11, 240, .12)
+}
+
+.ti::after {
+  border-color: var(--blue)
+}
+
+.ti .when {
+  color: var(--ink3);
+  padding-top: 4px
+}
+
+.ti h4 {
+  font-weight: 600
+}
+
+.ti.hl .tbody {
+  background: var(--bluegrad);
+  color: #fff;
+  border-radius: 28px;
+  padding: 24px 28px;
+  box-shadow: 0 30px 60px -36px rgba(11, 11, 240, .7)
+}
+
+.ti.hl .tbody p,
+.ti.hl .torg {
+  color: rgba(255, 255, 255, .82)
+}
+
+.ti.hl .tbody p b {
+  color: #fff
+}
+
+.badge {
+  background: var(--accent);
+  color: var(--indigo);
+  font-size: 10px !important
+}
+
+/* ---------- organization (indigo) ---------- */
+#organisasi,
+#organisasi.block {
+  background: var(--indigo);
+  color: #fff;
+  padding-top: clamp(90px, 12vw, 150px) !important
+}
+
+#organisasi .head h2 {
+  color: #fff
+}
+
+#organisasi .ecard {
+  background: var(--indigo2);
+  box-shadow: inset 0 0 0 1px rgba(156, 154, 255, .2);
+  border-radius: 32px
+}
+
+#organisasi .ecard:first-child {
+  background: var(--bluegrad);
+  box-shadow: none
+}
+
+#organisasi .ecard .eyebrow {
+  color: var(--accent)
+}
+
+#organisasi .ecard:first-child .eyebrow {
+  color: #fff
+}
+
+#organisasi .ecard .major {
+  color: var(--lav2)
+}
+
+#organisasi .ecard p:last-child {
+  color: rgba(255, 255, 255, .8)
+}
+
+#organisasi .ecard p b {
+  color: #fff
+}
+
+/* ---------- education (putih) ---------- */
+#pendidikan,
+#pendidikan.block {
+  padding-top: clamp(90px, 12vw, 150px) !important
+}
+
+.ecard {
+  background: var(--lavbg);
+  box-shadow: none;
+  border-radius: 32px
+}
+
+.ecard .eyebrow {
+  color: var(--blue)
+}
+
+.ecard .major {
+  color: var(--blue)
+}
+
+/* ---------- skills (biru, pil miring) ---------- */
+#skills,
+#skills.block {
+  background: var(--blue);
+  color: #fff;
+  padding-bottom: clamp(90px, 12vw, 150px)
+}
+
+#skills .head h2 {
+  color: #fff
+}
+
+#skills .t2 {
+  color: #aeacff
+}
+
+#skills .lead {
+  color: rgba(255, 255, 255, .84)
+}
+
+.scard {
+  background: var(--indigo);
+  box-shadow: none;
+  border-radius: 36px;
+  padding: 32px
+}
+
+.scard h3 {
+  font-size: clamp(40px, 4vw, 52px);
+  margin-bottom: 22px
+}
+
+.scard .tags {
+  gap: 10px 8px
+}
+
+.scard .tags span {
+  background: #fff;
+  color: var(--indigo);
+  font-weight: 600;
+  padding: 9px 16px;
+  box-shadow: 0 8px 16px -10px rgba(0, 0, 0, .6);
+  transition: transform .5s var(--spring)
+}
+
+.scard .tags span:nth-child(3n+1) {
+  transform: rotate(-4deg)
+}
+
+.scard .tags span:nth-child(3n+2) {
+  transform: rotate(3deg)
+}
+
+.scard .tags span:nth-child(3n) {
+  transform: rotate(-1.5deg)
+}
+
+@media(hover:hover) {
+  .scard .tags span:hover {
+    transform: rotate(0) scale(1.06)
+  }
+}
+
+.tool .ico {
+  background: #fff
+}
+
+/* ---------- closing (putih) ---------- */
+.closing {
+  padding-top: clamp(70px, 9vw, 120px);
+  padding-bottom: clamp(80px, 10vw, 130px)
+}
+
+.closing h2 {
+  color: var(--blue);
+  font-size: clamp(46px, 7vw, 96px);
+  max-width: 15ch;
+  margin-top: 22px
+}
+
+.closing .lead {
+  color: var(--ink2)
+}
+
+/* ---------- contact (biru, "HIT ME UP" raksasa) ---------- */
+.contact,
+.contact.dark {
+  background: var(--blue);
+  color: #fff;
+  padding-top: clamp(90px, 12vw, 150px)
+}
+
+.talkwrap {
+  position: relative;
+  margin: 0 auto
+}
+
+.talk {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--display);
+  text-transform: uppercase;
+  font-size: clamp(84px, 22.5vw, 290px);
+  line-height: .84;
+  letter-spacing: .004em;
+  white-space: nowrap
+}
+
+.talk span:first-child {
+  color: var(--lav)
+}
+
+.talkgo {
+  position: absolute;
+  left: 62%;
+  top: 50%;
+  width: clamp(76px, 13vw, 156px);
+  height: clamp(76px, 13vw, 156px);
+  margin: calc(clamp(76px, 13vw, 156px) / -2) 0 0 calc(clamp(76px, 13vw, 156px) / -2);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--indigo);
+  box-shadow: 0 24px 40px -18px rgba(0, 0, 40, .7);
+  transition: transform .5s var(--spring)
+}
+
+.talkgo svg {
+  width: 42%;
+  height: 42%
+}
+
+@media(hover:hover) {
+  .talkgo:hover {
+    transform: rotate(45deg) scale(1.06)
+  }
+}
+
+.talkgo.rv.in:hover {
+  transform: rotate(45deg) scale(1.06)
+}
+
+.contact h2 {
+  font-size: clamp(40px, 5.4vw, 72px);
+  max-width: 16ch;
+  margin: clamp(40px, 6vw, 72px) auto 0
+}
+
+/* kartu kontak di dalam satu kartu putih, kayak footer referensi */
+.cgrid {
+  background: #fff;
+  border-radius: 40px;
+  padding: 12px;
+  gap: 10px;
+  margin-top: clamp(48px, 6vw, 72px)
+}
+
+.cgrid a {
+  background: var(--lavbg);
+  color: var(--indigo);
+  border-radius: 28px
+}
+
+@media(hover:hover) {
+  .cgrid a:hover {
+    background: var(--lav2)
+  }
+}
+
+.cgrid .l {
+  color: var(--blue)
+}
+
+.cgrid .cico {
+  filter: drop-shadow(0 4px 8px rgba(20, 16, 92, .25))
+}
+
+@media(max-width:480px) {
+  .cgrid {
+    border-radius: 32px;
+    padding: 8px
+  }
+
+  .cgrid a {
+    border-radius: 24px
+  }
+}
+
+@media(max-width:700px) {
+
+  .ritme,
+  .bignum,
+  #karya,
+  #organisasi,
+  #pendidikan,
+  .closing,
+  .contact {
+    padding-top: 80px !important
+  }
+
+  .bnet-intro {
+    padding-bottom: 72px
+  }
+
+  #skills {
+    padding-bottom: 80px
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .pwin {
+    opacity: 1 !important;
+    transform: none !important
+  }
+}
