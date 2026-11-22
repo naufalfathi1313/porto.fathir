@@ -1749,21 +1749,8 @@ h4 {
   display: none
 }
 
-.tl.open .ti:not(.hl) {
-  animation: tlin .55s cubic-bezier(.2, .8, .2, 1) both;
-  animation-delay: calc(var(--k, 0) * 55ms + 80ms)
-}
-
-.tl.closing .ti:not(.hl) {
-  animation: tlout .3s ease both
-}
-
-@keyframes tlin {
-  from { opacity: 0; transform: translateY(-14px) scale(.98); filter: blur(4px) }
-}
-
-@keyframes tlout {
-  to { opacity: 0; transform: translateY(-8px) scale(.98); filter: blur(3px) }
+.ti.tlx {
+  overflow: clip
 }
 
 .tlmore {
@@ -1784,15 +1771,55 @@ h4 {
   cursor: pointer
 }
 
+.tlmore {
+  position: relative;
+  transition: transform .25s cubic-bezier(.32, .72, 0, 1), background .25s, color .25s
+}
+
+.tlmore:active {
+  transform: scale(.95)
+}
+
 .tlmore svg {
-  transition: transform .3s
+  transition: transform .45s cubic-bezier(.32, .72, 0, 1)
 }
 
 .tlmore[aria-expanded="true"] svg {
   transform: rotate(180deg)
 }
 
+/* ajakan buat dipencet: panah naik-turun + cincin denyut, cuma pas masih ketutup */
+.tlmore[aria-expanded="false"] svg {
+  animation: tlbob 1.6s cubic-bezier(.45, 0, .55, 1) infinite
+}
+
+.tlmore[aria-expanded="false"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 var(--indigo);
+  animation: tlpulse 2.4s cubic-bezier(.2, .8, .2, 1) infinite;
+  pointer-events: none
+}
+
+@media (hover: hover) {
+  .tlmore:hover {
+    background: var(--indigo);
+    color: #fff
+  }
+}
+
+@keyframes tlbob {
+  50% { transform: translateY(3px) }
+}
+
+@keyframes tlpulse {
+  0% { box-shadow: 0 0 0 0 rgba(20, 16, 92, .35) }
+  70%, 100% { box-shadow: 0 0 0 12px rgba(20, 16, 92, 0) }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .tl.open .ti:not(.hl),
-  .tl.closing .ti:not(.hl) { animation: none }
+  .tlmore svg,
+  .tlmore::after { animation: none !important }
 }
