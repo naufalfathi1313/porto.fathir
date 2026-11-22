@@ -842,11 +842,40 @@
   window.addEventListener('resize', onScroll);
   // timeline: default cuma yang Featured, sisanya dibuka lewat tombol
   var tlMore = document.getElementById('tlMore');
+  var tlAnim = null;
+  tis.filter(function(t) { return !t.classList.contains('hl'); }).forEach(function(t, i) {
+    t.style.setProperty('--k', i);
+  });
   tlMore.addEventListener('click', function() {
-    var open = tl.classList.toggle('open');
+    var open = !tl.classList.contains('open') || tl.classList.contains('closing');
     tlMore.setAttribute('aria-expanded', open);
     tlMore.firstChild.textContent = open ? 'Tutup' : 'Lihat semua (' + tis.length + ')';
-    if (!open) tl.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+    if (tlAnim) tlAnim.cancel();
+    var h0 = tl.offsetHeight, h1;
+    tl.classList.remove('closing', 'open');
+    if (!open) h1 = tl.offsetHeight;
+    tl.classList.add('open');
+    if (open) h1 = tl.offsetHeight;
+    else {
+      tl.classList.add('closing');
+      tl.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+    }
+    if (reduce || !tl.animate) {
+      if (!open) tl.classList.remove('open', 'closing');
+      onScroll();
+      return;
+    }
+    tl.style.overflow = 'clip';
+    tlAnim = tl.animate([{ height: h0 + 'px' }, { height: h1 + 'px' }], {
+      duration: open ? 650 : 500,
+      easing: 'cubic-bezier(.2, .8, .2, 1)'
+    });
+    tlAnim.onfinish = function() {
+      tl.style.overflow = '';
+      if (!open) tl.classList.remove('open', 'closing');
+      tlAnim = null;
+      onScroll();
+    };
     onScroll();
   });
   onScroll();

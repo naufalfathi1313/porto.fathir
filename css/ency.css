@@ -1750,11 +1750,20 @@ h4 {
 }
 
 .tl.open .ti:not(.hl) {
-  animation: tlin .45s cubic-bezier(.2, .8, .2, 1) both
+  animation: tlin .55s cubic-bezier(.2, .8, .2, 1) both;
+  animation-delay: calc(var(--k, 0) * 55ms + 80ms)
+}
+
+.tl.closing .ti:not(.hl) {
+  animation: tlout .3s ease both
 }
 
 @keyframes tlin {
-  from { opacity: 0; transform: translateY(-8px) }
+  from { opacity: 0; transform: translateY(-14px) scale(.98); filter: blur(4px) }
+}
+
+@keyframes tlout {
+  to { opacity: 0; transform: translateY(-8px) scale(.98); filter: blur(3px) }
 }
 
 .tlmore {
@@ -1784,5 +1793,6 @@ h4 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tl.open .ti:not(.hl) { animation: none }
+  .tl.open .ti:not(.hl),
+  .tl.closing .ti:not(.hl) { animation: none }
 }
