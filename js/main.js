@@ -842,41 +842,49 @@
   window.addEventListener('resize', onScroll);
   // timeline: default cuma yang Featured, sisanya dibuka lewat tombol
   var tlMore = document.getElementById('tlMore');
-  var tlAnim = null;
-  tis.filter(function(t) { return !t.classList.contains('hl'); }).forEach(function(t, i) {
-    t.style.setProperty('--k', i);
-  });
+  // tiap entry tersembunyi dianimasiin tingginya sendiri, jadi kartu Featured ikut geser pelan, nggak loncat
+  var tlExtra = tis.filter(function(t) { return !t.classList.contains('hl'); }),
+    tlEase = 'cubic-bezier(.32, .72, 0, 1)',
+    tlAnims = [];
   tlMore.addEventListener('click', function() {
-    var open = !tl.classList.contains('open') || tl.classList.contains('closing');
+    var open = !tl.classList.contains('open');
     tlMore.setAttribute('aria-expanded', open);
     tlMore.firstChild.textContent = open ? 'Tutup' : 'Lihat semua (' + tis.length + ')';
-    if (tlAnim) tlAnim.cancel();
-    var h0 = tl.offsetHeight, h1;
-    tl.classList.remove('closing', 'open');
-    if (!open) h1 = tl.offsetHeight;
-    tl.classList.add('open');
-    if (open) h1 = tl.offsetHeight;
-    else {
-      tl.classList.add('closing');
-      tl.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
-    }
+    tlAnims.forEach(function(a) { a.cancel(); });
+    tlAnims = [];
     if (reduce || !tl.animate) {
-      if (!open) tl.classList.remove('open', 'closing');
+      tl.classList.toggle('open', open);
       onScroll();
       return;
     }
-    tl.style.overflow = 'clip';
-    tlAnim = tl.animate([{ height: h0 + 'px' }, { height: h1 + 'px' }], {
-      duration: open ? 650 : 500,
-      easing: 'cubic-bezier(.2, .8, .2, 1)'
+    tl.classList.add('open');
+    var dur = open ? 700 : 550,
+      btnTop = tlMore.getBoundingClientRect().top;
+    tlExtra.forEach(function(t, i) {
+      t.classList.remove('tlx');
+      var full = [{ height: t.offsetHeight + 'px', paddingBottom: getComputedStyle(t).paddingBottom, opacity: 1 }],
+        none = [{ height: '0px', paddingBottom: '0px', opacity: 0 }];
+      t.classList.add('tlx');
+      tlAnims.push(t.animate(open ? none.concat(full) : full.concat(none), { duration: dur, easing: tlEase, fill: 'forwards' }));
+      if (open) tlAnims.push(t.querySelector('.tbody').animate(
+        [{ transform: 'translateY(-12px)', opacity: 0 }, { transform: 'none', opacity: 1 }],
+        { duration: 520, delay: 140 + i * 45, easing: tlEase, fill: 'backwards' }));
     });
-    tlAnim.onfinish = function() {
-      tl.style.overflow = '';
-      if (!open) tl.classList.remove('open', 'closing');
-      tlAnim = null;
+    // pas nutup, tombolnya ditahan di posisi jari biar halaman nggak loncat
+    var keep = function() {
+      if (!tlAnims.length) return;
+      if (!open) window.scrollBy({ top: tlMore.getBoundingClientRect().top - btnTop, behavior: 'instant' });
       onScroll();
+      requestAnimationFrame(keep);
     };
-    onScroll();
+    requestAnimationFrame(keep);
+    tlAnims[0].finished.then(function() {
+      if (!open) tl.classList.remove('open');
+      tlAnims.forEach(function(a) { a.cancel(); });
+      tlAnims = [];
+      tlExtra.forEach(function(t) { t.classList.remove('tlx'); });
+      onScroll();
+    }, function() {});
   });
   onScroll();
 })();
