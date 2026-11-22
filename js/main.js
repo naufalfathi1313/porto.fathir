@@ -531,7 +531,7 @@
     // titik nyala sekali pas ujung garis lewat tengahnya
     var tipY = tr.top + 8 + tp * (tr.height - 16);
     tis.forEach(function(t) {
-      if (!t.classList.contains('hit') && t.getBoundingClientRect().top + 14 <= tipY) t.classList.add('hit');
+      if (!t.classList.contains('hit') && t.offsetParent && t.getBoundingClientRect().top + 14 <= tipY) t.classList.add('hit');
     });
     // cookie: cokelatnya nambah seiring scroll
     var cr = closing.getBoundingClientRect(),
@@ -840,5 +840,14 @@
     passive: true
   });
   window.addEventListener('resize', onScroll);
+  // timeline: default cuma yang Featured, sisanya dibuka lewat tombol
+  var tlMore = document.getElementById('tlMore');
+  tlMore.addEventListener('click', function() {
+    var open = tl.classList.toggle('open');
+    tlMore.setAttribute('aria-expanded', open);
+    tlMore.firstChild.textContent = open ? 'Tutup' : 'Lihat semua (' + tis.length + ')';
+    if (!open) tl.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+    onScroll();
+  });
   onScroll();
 })();
