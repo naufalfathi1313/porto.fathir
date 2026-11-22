@@ -1743,3 +1743,46 @@ h4 {
     transform: none !important
   }
 }
+
+/* ---------- timeline dropdown ---------- */
+.tl:not(.open) .ti:not(.hl) {
+  display: none
+}
+
+.tl.open .ti:not(.hl) {
+  animation: tlin .45s cubic-bezier(.2, .8, .2, 1) both
+}
+
+@keyframes tlin {
+  from { opacity: 0; transform: translateY(-8px) }
+}
+
+.tlmore {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 0 44px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--indigo);
+  box-shadow: inset 0 0 0 1.5px var(--indigo);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer
+}
+
+.tlmore svg {
+  transition: transform .3s
+}
+
+.tlmore[aria-expanded="true"] svg {
+  transform: rotate(180deg)
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl.open .ti:not(.hl) { animation: none }
+}
